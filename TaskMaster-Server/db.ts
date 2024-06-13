@@ -9,7 +9,7 @@ let db: Db;
 export const connectDB = async () => {
     if (!db) {
         await client.connect();
-        db = client.db('rpg_task_app');
+        db = client.db('taskmaster');
     }
     return db;
 };
