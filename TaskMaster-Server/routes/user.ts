@@ -88,7 +88,7 @@ userRouter.get('/character', auth, async (req: Request, res: Response) => {
             return res.status(404).send('User not found');
         }
 
-        const character = await charactersCollection.findOne({ _id: ObjectId.createFromHexString(user.characterId) });
+        const character = await charactersCollection.findOne({ _id: new ObjectId(user.characterId) });
         if (!character) {
             return res.status(404).send('Character not found');
         }
@@ -112,17 +112,17 @@ userRouter.put('/character', auth, async (req: Request, res: Response) => {
             return res.status(404).send('User not found');
         }
 
-        const character = await charactersCollection.findOne({ _id: ObjectId.createFromHexString(user.characterId) });
+        const character = await charactersCollection.findOne({ _id: new ObjectId(user.characterId) });
         if (!character) {
             return res.status(404).send('Character not found');
         }
 
         await charactersCollection.updateOne(
-            { _id: ObjectId.createFromHexString(user.characterId) },
+            { _id: new ObjectId(user.characterId) },
             { $set: updates }
         );
 
-        const updatedCharacter = await charactersCollection.findOne({ _id: ObjectId.createFromHexString(user.characterId) });
+        const updatedCharacter = await charactersCollection.findOne({ _id: new ObjectId(user.characterId) });
         res.send(updatedCharacter);
     } catch (err) {
         res.status(500).send('Server error');
