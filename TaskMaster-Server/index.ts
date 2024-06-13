@@ -3,7 +3,9 @@ const app = express();
 import cors from 'cors';
 import dotenv from 'dotenv';
 import userRouter from './routes/user';
+import taskRouter from './routes/tasks';
 import { connectDB } from './db';
+import cron from 'node-cron';
 
 
 dotenv.config();
@@ -13,12 +15,24 @@ app.use(express.static('public'));
 const port = process.env.PORT || 3000;
 
 app.use('/api/users', userRouter);
+app.use('/api/tasks', taskRouter);
 
 connectDB().then(() => {
     app.listen(port, () => {
         console.log(`Server running on port ${port}`);
     });
+
+    cron.schedule('* * * * *', async () => {
+        const db = await connectDB();
+        const tasksCollection = db.collection('tasks');
+
+        await tasksCollection.updateMany(
+            { countdown: { $gt: 0 }, completed: false },
+            { $inc: { countdown: -60 } } 
+        );
+    });
 }).catch(err => {
     console.error('Failed to connect to the database', err);
     process.exit(1);
 });
+
