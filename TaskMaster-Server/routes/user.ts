@@ -1,6 +1,7 @@
 import { Router, Request, Response } from 'express';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
+import { ObjectId } from 'mongodb';
 import auth from '../middleware/auth';
 import { connectDB } from '../db';
 import dotenv from 'dotenv';
@@ -23,10 +24,10 @@ userRouter.post('/register', async (req: Request, res: Response) => {
 
         const hashedPassword = await bcrypt.hash(password, 10);
         const newUser = { username, password: hashedPassword };
-        const result = await usersCollection.insertOne(newUser);
+        const userResult = await usersCollection.insertOne(newUser);
 
         const newCharacter = {
-            userId: result.insertedId.toString(),
+            userId: userResult.insertedId.toString(),
             level: 1,
             experience: 0,
             gold: 0,
@@ -34,9 +35,14 @@ userRouter.post('/register', async (req: Request, res: Response) => {
             attackDamage: 1,
             equipment: []
         };
-        await charactersCollection.insertOne(newCharacter);
+        const characterResult = await charactersCollection.insertOne(newCharacter);
 
-        const payload = { userId: result.insertedId.toString() };
+        await usersCollection.updateOne(
+            { _id: userResult.insertedId },
+            { $set: { characterId: characterResult.insertedId } }
+        );
+
+        const payload = { userId: userResult.insertedId.toString() };
         const token = jwt.sign(payload, process.env.JWT_SECRET!, { expiresIn: '1h' });
 
         res.send({ token });
@@ -74,9 +80,15 @@ userRouter.post('/login', async (req: Request, res: Response) => {
 userRouter.get('/character', auth, async (req: Request, res: Response) => {
     try {
         const db = await connectDB();
+        const usersCollection = db.collection('users');
         const charactersCollection = db.collection('characters');
 
-        const character = await charactersCollection.findOne({ userId: (req as any).user.userId });
+        const user = await usersCollection.findOne({ _id: new ObjectId((req as any).user.userId) });
+        if (!user) {
+            return res.status(404).send('User not found');
+        }
+
+        const character = await charactersCollection.findOne({ _id: ObjectId.createFromHexString(user.characterId) });
         if (!character) {
             return res.status(404).send('Character not found');
         }
@@ -92,19 +104,25 @@ userRouter.put('/character', auth, async (req: Request, res: Response) => {
 
     try {
         const db = await connectDB();
+        const usersCollection = db.collection('users');
         const charactersCollection = db.collection('characters');
 
-        const character = await charactersCollection.findOne({ userId: (req as any).user.userId });
+        const user = await usersCollection.findOne({ _id: new ObjectId((req as any).user.userId) });
+        if (!user) {
+            return res.status(404).send('User not found');
+        }
+
+        const character = await charactersCollection.findOne({ _id: ObjectId.createFromHexString(user.characterId) });
         if (!character) {
             return res.status(404).send('Character not found');
         }
 
         await charactersCollection.updateOne(
-            { userId: (req as any).user.userId },
+            { _id: ObjectId.createFromHexString(user.characterId) },
             { $set: updates }
         );
 
-        const updatedCharacter = await charactersCollection.findOne({ userId: (req as any).user.userId });
+        const updatedCharacter = await charactersCollection.findOne({ _id: ObjectId.createFromHexString(user.characterId) });
         res.send(updatedCharacter);
     } catch (err) {
         res.status(500).send('Server error');
