@@ -5,6 +5,7 @@ import dotenv from 'dotenv';
 import userRouter from './routes/user';
 import taskRouter from './routes/tasks';
 import bossRouter from './routes/boss';
+import equipmentRouter from './routes/equipment';
 import { connectDB } from './db';
 import cron from 'node-cron';
 
@@ -18,6 +19,7 @@ const port = process.env.PORT || 3000;
 app.use('/api/users', userRouter);
 app.use('/api', taskRouter);
 app.use('/api', bossRouter);
+app.use('/api', equipmentRouter);
 
 connectDB().then(() => {
     app.listen(port, () => {
