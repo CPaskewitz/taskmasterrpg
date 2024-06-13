@@ -6,9 +6,9 @@ import { connectDB } from '../db';
 import dotenv from 'dotenv';
 dotenv.config();
 
-const router = Router();
+const userRouter = Router();
 
-router.post('/register', async (req: Request, res: Response) => {
+userRouter.post('/register', async (req: Request, res: Response) => {
     const { username, password } = req.body;
 
     try {
@@ -45,7 +45,7 @@ router.post('/register', async (req: Request, res: Response) => {
     }
 });
 
-router.post('/login', async (req: Request, res: Response) => {
+userRouter.post('/login', async (req: Request, res: Response) => {
     const { username, password } = req.body;
 
     try {
@@ -71,7 +71,7 @@ router.post('/login', async (req: Request, res: Response) => {
     }
 });
 
-router.get('/character', auth, async (req: Request, res: Response) => {
+userRouter.get('/character', auth, async (req: Request, res: Response) => {
     try {
         const db = await connectDB();
         const charactersCollection = db.collection('characters');
@@ -87,7 +87,7 @@ router.get('/character', auth, async (req: Request, res: Response) => {
     }
 });
 
-router.put('/character', auth, async (req: Request, res: Response) => {
+userRouter.put('/character', auth, async (req: Request, res: Response) => {
     const updates = req.body;
 
     try {
@@ -111,4 +111,4 @@ router.put('/character', auth, async (req: Request, res: Response) => {
     }
 });
 
-export default router;
+export default userRouter;
