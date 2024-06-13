@@ -4,6 +4,7 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import userRouter from './routes/user';
 import taskRouter from './routes/tasks';
+import bossRouter from './routes/boss';
 import { connectDB } from './db';
 import cron from 'node-cron';
 
@@ -15,7 +16,8 @@ app.use(express.static('public'));
 const port = process.env.PORT || 3000;
 
 app.use('/api/users', userRouter);
-app.use('/api/tasks', taskRouter);
+app.use('/api', taskRouter);
+app.use('/api', bossRouter);
 
 connectDB().then(() => {
     app.listen(port, () => {
