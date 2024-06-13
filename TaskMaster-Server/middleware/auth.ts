@@ -3,19 +3,15 @@ import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
 dotenv.config();
 
-interface AuthRequest extends Request {
-    user?: any;
-}
-
-const auth = (req: AuthRequest, res: Response, next: NextFunction) => {
+const auth = (req: Request, res: Response, next: NextFunction) => {
     const token = req.header('Authorization')?.replace('Bearer ', '');
     if (!token) {
         return res.status(401).send('Access denied. No token provided.');
     }
 
     try {
-        const decoded = jwt.verify(token, process.env.JWT_SECRET!);
-        req.user = decoded;
+        const decoded = jwt.verify(token, process.env.JWT_SECRET!) as { userId: string };
+        (req as any).user = decoded;
         next();
     } catch (ex) {
         res.status(400).send('Invalid token.');
