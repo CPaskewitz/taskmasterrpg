@@ -1,7 +1,7 @@
 import { Router, Request, Response } from 'express';
 import { ObjectId, WithId, Document } from 'mongodb';
 import auth from '../middleware/auth';
-import { connectDB } from '../db';
+import { connectDB } from '../src/db';
 import dotenv from 'dotenv';
 dotenv.config();
 

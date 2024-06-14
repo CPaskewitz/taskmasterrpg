@@ -1,16 +1,15 @@
+import dotenv from 'dotenv';
+dotenv.config();
 import express from 'express';
 const app = express();
 import cors from 'cors';
-import dotenv from 'dotenv';
-import userRouter from './routes/user';
-import taskRouter from './routes/tasks';
-import bossRouter from './routes/boss';
-import equipmentRouter from './routes/equipment';
+import userRouter from '../routes/user';
+import taskRouter from '../routes/tasks';
+import bossRouter from '../routes/boss';
+import equipmentRouter from '../routes/equipment';
 import { connectDB } from './db';
 import cron from 'node-cron';
 
-
-dotenv.config();
 app.use(express.json());
 app.use(cors());
 app.use(express.static('public'));
