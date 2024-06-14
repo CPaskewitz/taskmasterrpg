@@ -66,7 +66,7 @@ bossRouter.put('/boss/:id/attack', auth, async (req: Request, res: Response) => 
             await bossesCollection.deleteOne({ _id: new ObjectId(bossId) });
 
             const updatedExperience = character.experience + boss.rewardExp;
-            const levelUp = updatedExperience >= character.level * 10; 
+            const levelUp = updatedExperience >= character.level * (10 + character.level - 1); 
 
             const updatedCharacter = {
                 $set: {
@@ -110,7 +110,7 @@ bossRouter.post('/boss/new', auth, async (req: Request, res: Response) => {
 
         const level = character.level;
         const healthPoints = level * 10 + getRandomIntInclusive(1, level * 2);
-        const rewardExp = level * 2 + getRandomIntInclusive(1, level);
+        const rewardExp = level * 2 + getRandomIntInclusive(1, level + 1);
         const rewardGold = level * 5 + getRandomIntInclusive(1, level * 2);
 
         const newBoss = {
