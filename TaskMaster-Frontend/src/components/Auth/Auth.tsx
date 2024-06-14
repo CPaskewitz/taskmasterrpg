@@ -1,12 +1,14 @@
 import React, { useState, FormEvent } from 'react';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 import './Auth.scss';
 
 const Auth: React.FC = () => {
     const [username, setUsername] = useState<string>('');
     const [password, setPassword] = useState<string>('');
     const [isLogin, setIsLogin] = useState<boolean>(true);
-
+    const navigate = useNavigate(); 
+    
     const handleSubmit = async (e: FormEvent) => {
         e.preventDefault();
 
@@ -22,6 +24,8 @@ const Auth: React.FC = () => {
 
             setUsername('');
             setPassword('');
+
+            navigate('/');
         } catch (error: any) {
             console.error('Error during authentication:', error.response.data);
             alert(error.response.data);

@@ -1,7 +1,7 @@
 import { Db, MongoClient } from 'mongodb';
 import dotenv from 'dotenv';
 
-dotenv.config();
+dotenv.config({ path: './.env.local' });
 
 const uri = process.env.MONGO_URI;
 

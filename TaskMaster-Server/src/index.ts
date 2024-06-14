@@ -1,5 +1,6 @@
 import dotenv from 'dotenv';
-dotenv.config();
+dotenv.config({path: './.env.local'});
+
 import express from 'express';
 const app = express();
 import cors from 'cors';
@@ -31,11 +32,10 @@ connectDB().then(() => {
 
         await tasksCollection.updateMany(
             { countdown: { $gt: 0 }, completed: false },
-            { $inc: { countdown: -60 } } 
+            { $inc: { countdown: -60 } }
         );
     });
 }).catch(err => {
     console.error('Failed to connect to the database', err);
     process.exit(1);
 });
-
