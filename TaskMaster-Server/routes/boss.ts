@@ -11,7 +11,6 @@ function getRandomIntInclusive(min: number, max: number) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
-// Fetch Current Boss
 bossRouter.get('/boss', auth, async (req: Request, res: Response) => {
     const userId = (req as any).user.userId;
 
@@ -38,7 +37,6 @@ bossRouter.get('/boss', auth, async (req: Request, res: Response) => {
     }
 });
 
-// Update Boss Health on Attack
 bossRouter.put('/boss/:id/attack', auth, async (req: Request, res: Response) => {
     const userId = (req as any).user.userId;
     const bossId = req.params.id;
@@ -64,12 +62,11 @@ bossRouter.put('/boss/:id/attack', auth, async (req: Request, res: Response) => 
         const updatedHealth = boss.healthPoints - damage;
 
         if (updatedHealth <= 0) {
-            // Boss is defeated
+        
             await bossesCollection.deleteOne({ _id: new ObjectId(bossId) });
 
-            // Update character experience, level, and attack power
             const updatedExperience = character.experience + boss.rewardExp;
-            const levelUp = updatedExperience >= character.level * 10; // Example level up condition
+            const levelUp = updatedExperience >= character.level * 10; 
 
             const updatedCharacter = {
                 $set: {
@@ -84,7 +81,7 @@ bossRouter.put('/boss/:id/attack', auth, async (req: Request, res: Response) => 
 
             res.send({ message: 'Boss defeated', bossDefeated: true });
         } else {
-            // Update boss health
+        
             await bossesCollection.updateOne(
                 { _id: new ObjectId(bossId) },
                 { $set: { healthPoints: updatedHealth } }
@@ -97,7 +94,6 @@ bossRouter.put('/boss/:id/attack', auth, async (req: Request, res: Response) => 
     }
 });
 
-// Fetch New Boss (Boss level equals character level)
 bossRouter.post('/boss/new', auth, async (req: Request, res: Response) => {
     const userId = (req as any).user.userId;
 

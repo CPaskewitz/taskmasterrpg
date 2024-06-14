@@ -56,13 +56,11 @@ equipmentRouter.post('/character/equip', auth, async (req: Request, res: Respons
             return res.status(404).send('Equipment not found');
         }
 
-        // Remove existing item of the same type
         await charactersCollection.updateOne(
             { _id: new ObjectId(user.characterId) },
             { $pull: { equipment: { type: equipmentItem.type } as any } }
         );
 
-        // Add the new equipment item to the character's equipment array
         await charactersCollection.updateOne(
             { _id: new ObjectId(user.characterId) },
             { $push: { equipment: equipmentItem as any } }
