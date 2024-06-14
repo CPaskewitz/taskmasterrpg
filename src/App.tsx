@@ -11,7 +11,7 @@ function App() {
     <Router>
       <Routes>
         <Route path="/login" element={<Auth />} />
-        <PrivateRoute path="/" component={Home} />
+        <Route path="/" element={<PrivateRoute component={Home} />} />
       </Routes>
     </Router>
   )
