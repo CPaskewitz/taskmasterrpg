@@ -17,8 +17,8 @@ taskRouter.post('/tasks', auth, async (req: Request, res: Response) => {
         estimatedTime,
         countdown: estimatedTime,
         completed: false,
-        type, 
-        createdAt: new Date() 
+        type,
+        createdAt: new Date()
     };
 
     try {
@@ -77,11 +77,26 @@ taskRouter.put('/tasks/:id', auth, async (req: Request, res: Response) => {
     try {
         const db = await connectDB();
         const tasksCollection = db.collection('tasks');
+        const charactersCollection = db.collection('characters');
 
         const task = await tasksCollection.findOne({ _id: new ObjectId(taskId), userId });
 
         if (!task) {
             return res.status(404).send('Task not found');
+        }
+
+        if (updates.completed && !task.completed) {
+            const goldReward = Math.max(1, Math.floor(task.estimatedTime / 10));
+
+            await charactersCollection.updateOne(
+                { userId: new ObjectId(userId) },
+                {
+                    $inc: {
+                        attackChances: 1,
+                        gold: goldReward
+                    }
+                }
+            );
         }
 
         await tasksCollection.updateOne({ _id: new ObjectId(taskId) }, { $set: updates });
