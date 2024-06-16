@@ -1,5 +1,5 @@
 import React, { useState, FormEvent } from 'react';
-import axios from 'axios';
+import axios from '../../../axiosConfig'; 
 import { useNavigate } from 'react-router-dom';
 import './Auth.scss';
 
@@ -7,8 +7,8 @@ const Auth: React.FC = () => {
     const [username, setUsername] = useState<string>('');
     const [password, setPassword] = useState<string>('');
     const [isLogin, setIsLogin] = useState<boolean>(true);
-    const navigate = useNavigate(); 
-    
+    const navigate = useNavigate();
+
     const handleSubmit = async (e: FormEvent) => {
         e.preventDefault();
 

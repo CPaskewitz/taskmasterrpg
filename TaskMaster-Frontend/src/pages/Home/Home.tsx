@@ -1,4 +1,5 @@
 import LogoutButton from "../../components/LogoutButton/LogoutButton";
+import TaskList from "../../components/TaskList/TaskList";
 
 export function Home() {
 
@@ -6,6 +7,7 @@ export function Home() {
         <>
             <h1>Home Page</h1>
             <LogoutButton />
+            <TaskList />
         </>
     )
 }

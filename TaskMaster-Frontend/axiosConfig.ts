@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const baseURL = process.env.REACT_APP_BASE_URL || 'http://localhost:3000'; 
+const baseURL = import.meta.env.VITE_APP_BASE_URL || 'http://localhost:3000';
 const axiosInstance = axios.create({
     baseURL,
     headers: {
