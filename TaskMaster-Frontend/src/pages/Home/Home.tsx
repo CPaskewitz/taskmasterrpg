@@ -2,6 +2,7 @@ import { useState } from 'react';
 import LogoutButton from "../../components/LogoutButton/LogoutButton";
 import Stats from "../../components/Stats/Stats";
 import TaskList from "../../components/TaskList/TaskList";
+import Shop from "../../components/Shop/Shop";
 
 export function Home() {
     const [refreshStats, setRefreshStats] = useState(false);
@@ -15,6 +16,7 @@ export function Home() {
             <LogoutButton />
             <Stats refresh={refreshStats} />
             <TaskList onTaskComplete={triggerStatsRefresh} />
+            <Shop refreshStats={triggerStatsRefresh} />
         </>
-    )
+    );
 }

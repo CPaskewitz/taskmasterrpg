@@ -2,6 +2,13 @@ import React, { useState, useEffect } from 'react';
 import axios from '../../../axiosConfig';
 import './Stats.scss';
 
+interface Equipment {
+    _id: string;
+    name: string;
+    type: string;
+    attackPower: number;
+}
+
 interface Character {
     userId: string;
     level: number;
@@ -9,7 +16,7 @@ interface Character {
     gold: number;
     attackChances: number;
     attackDamage: number;
-    equipment: any[];
+    equipment: Equipment[];
 }
 
 interface StatsProps {
@@ -29,6 +36,7 @@ const Stats: React.FC<StatsProps> = ({ refresh }) => {
             setCharacter(response.data);
         } catch (error: any) {
             console.error('Error fetching character stats:', error.response?.data || error.message);
+            alert('Failed to fetch character stats');
         }
     };
 
@@ -48,7 +56,14 @@ const Stats: React.FC<StatsProps> = ({ refresh }) => {
             <div className="stats__item">Gold: <span className="stats__value">{character.gold}</span></div>
             <div className="stats__item">Attack Chances: <span className="stats__value">{character.attackChances}</span></div>
             <div className="stats__item">Attack Damage: <span className="stats__value">{character.attackDamage}</span></div>
-            <div className="stats__item">Equipment: <span className="stats__value">{character.equipment.length}</span></div>
+            <div className="stats__item">Equipment:</div>
+            <ul>
+                {character.equipment.map(item => (
+                    <li key={item._id} className="stats__equipment-item" title={`Attack Power: ${item.attackPower}`}>
+                        {item.name}
+                    </li>
+                ))}
+            </ul>
         </div>
     );
 };

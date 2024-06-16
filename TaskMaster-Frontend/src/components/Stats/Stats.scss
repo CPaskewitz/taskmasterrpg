@@ -1,32 +1,35 @@
 .stats {
+    padding: 1rem;
     background-color: #f4f4f9;
-    border: 1px solid #ddd;
     border-radius: 8px;
-    padding: 16px;
-    width: 300px;
-    margin: 0 auto;
-    text-align: center;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 
     &__header {
-        font-size: 24px;
-        margin-bottom: 16px;
-        color: #333;
+        font-size: 1.5rem;
+        margin-bottom: 1rem;
     }
 
     &__item {
-        font-size: 18px;
-        margin: 8px 0;
-        color: #555;
+        font-size: 1.2rem;
+        margin: 0.5rem 0;
+
+        .stats__value {
+            font-weight: bold;
+        }
     }
 
-    &__value {
-        font-weight: bold;
-        color: #000;
+    &__equipment-item {
+        margin: 0.5rem 0;
+        cursor: pointer;
+
+        &:hover {
+            color: #007bff;
+        }
     }
 
     &__loading {
-        font-size: 20px;
-        color: #888;
+        font-size: 1.2rem;
+        text-align: center;
+        padding: 1rem;
     }
 }

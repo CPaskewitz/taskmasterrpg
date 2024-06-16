@@ -1,0 +1,49 @@
+.shop {
+    padding: 1rem;
+    background-color: #f4f4f9;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+    &__header {
+        font-size: 1.5rem;
+        margin-bottom: 1rem;
+    }
+
+    &__list {
+        list-style: none;
+        padding: 0;
+    }
+
+    &__item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0.5rem 0;
+        border-bottom: 1px solid #ddd;
+
+        &:last-child {
+            border-bottom: none;
+        }
+
+        &-name {
+            font-weight: bold;
+        }
+
+        &-cost {
+            margin-right: 1rem;
+        }
+
+        &-button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            cursor: pointer;
+
+            &:hover {
+                background-color: #0056b3;
+            }
+        }
+    }
+}
