@@ -14,7 +14,11 @@ interface Task {
     type: 'daily' | 'general';
 }
 
-const TaskList: React.FC = () => {
+interface TaskListProps {
+    onTaskComplete: () => void;
+}
+
+const TaskList: React.FC<TaskListProps> = ({ onTaskComplete }) => {
     const [tasks, setTasks] = useState<Task[]>([]);
     const [description, setDescription] = useState('');
     const [estimatedTime, setEstimatedTime] = useState(1);
@@ -82,6 +86,7 @@ const TaskList: React.FC = () => {
                 }
             });
             setTasks(tasks.map(task => (task._id === id ? response.data : task)));
+            onTaskComplete();
         } catch (error: any) {
             console.error('Error completing task:', error.response?.data || error.message);
             alert('Failed to complete task');

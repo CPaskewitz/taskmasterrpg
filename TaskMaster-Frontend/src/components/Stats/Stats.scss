@@ -1,0 +1,32 @@
+.stats {
+    background-color: #f4f4f9;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 16px;
+    width: 300px;
+    margin: 0 auto;
+    text-align: center;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+
+    &__header {
+        font-size: 24px;
+        margin-bottom: 16px;
+        color: #333;
+    }
+
+    &__item {
+        font-size: 18px;
+        margin: 8px 0;
+        color: #555;
+    }
+
+    &__value {
+        font-weight: bold;
+        color: #000;
+    }
+
+    &__loading {
+        font-size: 20px;
+        color: #888;
+    }
+}
