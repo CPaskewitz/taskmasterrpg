@@ -8,7 +8,7 @@ dotenv.config();
 const taskRouter = Router();
 
 taskRouter.post('/tasks', auth, async (req: Request, res: Response) => {
-    const { description, estimatedTime } = req.body;
+    const { description, estimatedTime, type } = req.body;
     const userId = (req as any).user.userId;
 
     const newTask = {
@@ -16,7 +16,9 @@ taskRouter.post('/tasks', auth, async (req: Request, res: Response) => {
         description,
         estimatedTime,
         countdown: estimatedTime,
-        completed: false
+        completed: false,
+        type, 
+        createdAt: new Date() 
     };
 
     try {

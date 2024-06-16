@@ -1,13 +1,22 @@
 import axios from 'axios';
 
-const token = localStorage.getItem('token');
-const baseURL = process.env.BASE_URL || 3000;
-
-const instance = axios.create({
-    baseURL: `${baseURL}`,
+const baseURL = process.env.REACT_APP_BASE_URL || 'http://localhost:3000'; 
+const axiosInstance = axios.create({
+    baseURL,
     headers: {
-        Authorization: token ? `Bearer ${token}` : ''
+        'Content-Type': 'application/json'
     }
 });
 
-export default instance;
+axiosInstance.interceptors.request.use(
+    (config) => {
+        const token = localStorage.getItem('token');
+        if (token) {
+            config.headers.Authorization = `Bearer ${token}`;
+        }
+        return config;
+    },
+    (error) => Promise.reject(error)
+);
+
+export default axiosInstance;

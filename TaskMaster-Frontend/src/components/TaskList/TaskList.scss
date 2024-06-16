@@ -1,0 +1,80 @@
+.task-list {
+    width: 100%;
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+    background: #f4f4f4;
+    border-radius: 10px;
+
+    h2 {
+        text-align: center;
+    }
+
+    form {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        margin-bottom: 20px;
+
+        div {
+            display: flex;
+            flex-direction: column;
+        }
+
+        label {
+            margin-bottom: 5px;
+        }
+
+        input,
+        select,
+        button {
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+
+        button {
+            background: #007bff;
+            color: white;
+            cursor: pointer;
+
+            &:hover {
+                background: #0056b3;
+            }
+        }
+    }
+
+    ul {
+        list-style: none;
+        padding: 0;
+
+        li {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+            background: white;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+
+            button {
+                padding: 5px 10px;
+                border-radius: 5px;
+                border: none;
+                background: #28a745;
+                color: white;
+                cursor: pointer;
+
+                &:disabled {
+                    background: #ccc;
+                    cursor: not-allowed;
+                }
+
+                &:hover:not(:disabled) {
+                    background: #218838;
+                }
+            }
+        }
+    }
+}
