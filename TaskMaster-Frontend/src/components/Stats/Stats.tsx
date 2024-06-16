@@ -2,13 +2,6 @@ import React, { useState, useEffect } from 'react';
 import axios from '../../../axiosConfig';
 import './Stats.scss';
 
-interface Equipment {
-    _id: string;
-    name: string;
-    type: string;
-    attackPower: number;
-}
-
 interface Character {
     userId: string;
     level: number;
@@ -17,6 +10,15 @@ interface Character {
     attackChances: number;
     attackDamage: number;
     equipment: Equipment[];
+}
+
+interface Equipment {
+    _id: string;
+    name: string;
+    type: string;
+    damageBoost: number;
+    cost: number;
+    requiredLevel: number;
 }
 
 interface StatsProps {
@@ -56,14 +58,16 @@ const Stats: React.FC<StatsProps> = ({ refresh }) => {
             <div className="stats__item">Gold: <span className="stats__value">{character.gold}</span></div>
             <div className="stats__item">Attack Chances: <span className="stats__value">{character.attackChances}</span></div>
             <div className="stats__item">Attack Damage: <span className="stats__value">{character.attackDamage}</span></div>
-            <div className="stats__item">Equipment:</div>
-            <ul>
-                {character.equipment.map(item => (
-                    <li key={item._id} className="stats__equipment-item" title={`Attack Power: ${item.attackPower}`}>
-                        {item.name}
-                    </li>
-                ))}
-            </ul>
+            <div className="stats__item">
+                Equipment:
+                <ul className="stats__equipment-list">
+                    {character.equipment.map(item => (
+                        <li key={item._id} className="stats__equipment-item" title={`Type: ${item.type}, Damage Boost: ${item.damageBoost}`}>
+                            {item.name}
+                        </li>
+                    ))}
+                </ul>
+            </div>
         </div>
     );
 };

@@ -16,7 +16,7 @@ export function Home() {
             <LogoutButton />
             <Stats refresh={refreshStats} />
             <TaskList onTaskComplete={triggerStatsRefresh} />
-            <Shop refreshStats={triggerStatsRefresh} />
+            <Shop onPurchase={triggerStatsRefresh} />
         </>
     );
 }
