@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import axios from '../../../axiosConfig';
 import { useNavigate } from 'react-router-dom';
+import DailyTasks from '../DailyTasks/DailyTasks';
+import GeneralTasks from '../GeneralTasks/GeneralTasks';
 import './TaskList.scss';
 
 interface Task {
@@ -15,10 +17,16 @@ interface Task {
 const TaskList: React.FC = () => {
     const [tasks, setTasks] = useState<Task[]>([]);
     const [description, setDescription] = useState('');
-    const [estimatedTime, setEstimatedTime] = useState(0);
+    const [estimatedTime, setEstimatedTime] = useState(1);
     const [taskType, setTaskType] = useState<'daily' | 'general'>('general');
+    const [showForm, setShowForm] = useState(false);
     const navigate = useNavigate();
     const token = localStorage.getItem('token');
+
+    const timeOptions = [
+        1, 5, 10, 15, 30, 45,
+        60, 90, 120, 150, 180, 210, 240, 270, 300, 330, 360
+    ];
 
     useEffect(() => {
         if (!token) {
@@ -59,7 +67,7 @@ const TaskList: React.FC = () => {
             });
             setTasks([...tasks, response.data]);
             setDescription('');
-            setEstimatedTime(0);
+            setEstimatedTime(1);
         } catch (error: any) {
             console.error('Error creating task:', error.response?.data || error.message);
             alert('Failed to create task');
@@ -80,51 +88,77 @@ const TaskList: React.FC = () => {
         }
     };
 
+    const handleDeleteTask = async (id: string) => {
+        try {
+            await axios.delete(`/api/tasks/${id}`, {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            });
+            setTasks(tasks.filter(task => task._id !== id));
+        } catch (error: any) {
+            console.error('Error deleting task:', error.response?.data || error.message);
+            alert('Failed to delete task');
+        }
+    };
+
+    const updateCountdown = () => {
+        setTasks(tasks.map(task => {
+            if (task.countdown > 0) {
+                return { ...task, countdown: task.countdown - 1 };
+            }
+            return task;
+        }));
+    };
+
+    useEffect(() => {
+        const interval = setInterval(updateCountdown, 60000);
+        return () => clearInterval(interval);
+    }, [tasks]);
+
     return (
         <div className="task-list">
             <h2>Task List</h2>
-            <form onSubmit={handleSubmit}>
-                <div>
-                    <label>Description</label>
-                    <input
-                        type="text"
-                        value={description}
-                        onChange={(e) => setDescription(e.target.value)}
-                        required
-                    />
-                </div>
-                <div>
-                    <label>Estimated Time (minutes)</label>
-                    <input
-                        type="number"
-                        value={estimatedTime}
-                        onChange={(e) => setEstimatedTime(Number(e.target.value))}
-                        required
-                    />
-                </div>
-                <div>
-                    <label>Task Type</label>
-                    <select value={taskType} onChange={(e) => setTaskType(e.target.value as 'daily' | 'general')}>
-                        <option value="general">General</option>
-                        <option value="daily">Daily</option>
-                    </select>
-                </div>
-                <button type="submit">Add Task</button>
-            </form>
-            <ul>
-                {tasks.map((task) => (
-                    <li key={task._id}>
-                        <span>{task.description}</span>
-                        <span>{task.countdown} minutes left</span>
-                        <button
-                            onClick={() => handleCompleteTask(task._id)}
-                            disabled={task.countdown > 0 || task.completed}
+            <button onClick={() => setShowForm(!showForm)}>
+                {showForm ? 'Hide Form' : 'Show Form'}
+            </button>
+            {showForm && (
+                <form onSubmit={handleSubmit}>
+                    <div>
+                        <label>Description</label>
+                        <input
+                            type="text"
+                            value={description}
+                            onChange={(e) => setDescription(e.target.value)}
+                            required
+                        />
+                    </div>
+                    <div>
+                        <label>Estimated Time (minutes)</label>
+                        <select
+                            value={estimatedTime}
+                            onChange={(e) => setEstimatedTime(Number(e.target.value))}
+                            required
                         >
-                            {task.completed ? 'Completed' : 'Complete Task'}
-                        </button>
-                    </li>
-                ))}
-            </ul>
+                            {timeOptions.map((time) => (
+                                <option key={time} value={time}>
+                                    {time < 60 ? `${time} min` : `${Math.floor(time / 60)} hour${time >= 120 ? 's' : ''} ${time % 60 ? `${time % 60} min` : ''}`}
+                                </option>
+                            ))}
+                        </select>
+                    </div>
+                    <div>
+                        <label>Task Type</label>
+                        <select value={taskType} onChange={(e) => setTaskType(e.target.value as 'daily' | 'general')}>
+                            <option value="general">General</option>
+                            <option value="daily">Daily</option>
+                        </select>
+                    </div>
+                    <button type="submit">Add Task</button>
+                </form>
+            )}
+            <DailyTasks tasks={tasks} onComplete={handleCompleteTask} onDelete={handleDeleteTask} />
+            <GeneralTasks tasks={tasks} onComplete={handleCompleteTask} onDelete={handleDeleteTask} />
         </div>
     );
 };
