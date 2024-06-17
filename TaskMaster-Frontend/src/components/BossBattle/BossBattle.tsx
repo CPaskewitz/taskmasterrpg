@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import axios from '../../../axiosConfig';
 import './BossBattle.scss';
+import BossHealthBar from '../BossHealthBar/BossHealthBar';
 
 interface Boss {
     _id: string;
@@ -40,10 +41,11 @@ interface BossBattleProps {
 const BossBattle: React.FC<BossBattleProps> = ({ refreshStats, character }) => {
     const [boss, setBoss] = useState<Boss | null>(null);
     const [rewards, setRewards] = useState<{ gold: number; exp: number; levelUp: boolean; newLevel?: number } | null>(null);
+    const [isFindingNextEnemy, setIsFindingNextEnemy] = useState<boolean>(false);
     const [isLoading, setIsLoading] = useState<boolean>(true);
     const token = localStorage.getItem('token');
 
-    const fetchBoss = async () => {
+    const fetchBoss = useCallback(async () => {
         setIsLoading(true);
         try {
             const bossResponse = await axios.get('/api/boss', {
@@ -58,16 +60,15 @@ const BossBattle: React.FC<BossBattleProps> = ({ refreshStats, character }) => {
         } finally {
             setIsLoading(false);
         }
-    };
+    }, [token]);
 
     useEffect(() => {
         fetchBoss();
-    }, [token, refreshStats]);
+    }, [fetchBoss]);
 
     const handleAttack = async () => {
         if (character && boss) {
-            setRewards(null); 
-            setIsLoading(true);
+            setRewards(null);
             try {
                 const attackResponse = await axios.put(`/api/boss/${boss._id}/attack`, {
                     damage: character.attackDamage
@@ -85,6 +86,9 @@ const BossBattle: React.FC<BossBattleProps> = ({ refreshStats, character }) => {
                         newLevel: attackResponse.data.levelUp ? character.level + 1 : character.level
                     });
 
+                    setBoss({ ...boss, healthPoints: 0 });
+                    setIsFindingNextEnemy(true);
+
                     await axios.post('/api/boss/new', {}, {
                         headers: {
                             Authorization: `Bearer ${token}`
@@ -99,7 +103,7 @@ const BossBattle: React.FC<BossBattleProps> = ({ refreshStats, character }) => {
                 console.error('Error attacking boss:', error.response?.data || error.message);
                 alert('Failed to attack boss');
             } finally {
-                setIsLoading(false);
+                setIsFindingNextEnemy(false);
             }
         }
     };
@@ -112,7 +116,7 @@ const BossBattle: React.FC<BossBattleProps> = ({ refreshStats, character }) => {
         return <div className="boss-battle__loading">Loading...</div>;
     }
 
-    const healthPercentage = (boss.healthPoints / boss.maxHealthPoints) * 100;
+    const attackChances = character.attackChances ?? 0;
 
     return (
         <div className="boss-battle">
@@ -120,23 +124,20 @@ const BossBattle: React.FC<BossBattleProps> = ({ refreshStats, character }) => {
             <div className="boss-battle__boss-info">
                 <p className="boss-battle__boss-level">Level: {boss.level}</p>
                 <img src={boss.imageUrl} alt={boss.name} className="boss-battle__boss-image" />
-                <div className="boss-battle__boss-health-bar">
-                    <div className="boss-battle__boss-health-bar-inner" style={{ width: `${healthPercentage}%` }}>
-                        {boss.healthPoints}/{boss.maxHealthPoints}
-                    </div>
-                </div>
+                <BossHealthBar healthPoints={boss.healthPoints} maxHealthPoints={boss.maxHealthPoints} />
             </div>
             <div className="boss-battle__action">
                 <button
                     className="boss-battle__attack-button"
                     onClick={handleAttack}
-                    disabled={character.attackChances <= 0}
+                    disabled={attackChances <= 0 || isFindingNextEnemy}
                 >
                     Attack Boss
                 </button>
-                <p className="boss-battle__attack-chances">Attack Chances: {character.attackChances}</p>
+                <p className="boss-battle__attack-chances">Attack Chances: {attackChances}</p>
             </div>
             {character.attackChances <= 0 && <p className="boss-battle__no-chances">No attack chances left!</p>}
+            {isFindingNextEnemy && <div className="boss-battle__loading">Searching for new enemy...</div>}
             {rewards && (
                 <div className="boss-battle__rewards">
                     <p>Gold Earned: {rewards.gold}</p>

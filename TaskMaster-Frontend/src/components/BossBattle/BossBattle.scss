@@ -13,17 +13,10 @@
         color: #333;
     }
 
-    &__boss {
-
+    &__boss{
+    
         &-info {
-            margin-bottom: 20px;
-        }
-
-        &-image {
-            width: 150px;
-            height: 150px;
-            border-radius: 10px;
-            margin: 10px 0;
+        margin-bottom: 20px;
         }
 
         &-level {
@@ -32,26 +25,11 @@
             color: #444;
         }
 
-        &-health-bar {
-            width: 80%;
-            height: 25px;
-            background-color: #e0e0e0;
-            border-radius: 15px;
-            overflow: hidden;
-            margin: 0 auto;
-            position: relative;
-            text-align: center;
-            line-height: 25px;
-            color: white;
-        }
-
-        &-health-bar-inner {
-            height: 100%;
-            background-color: #d9534f;
-            text-align: center;
-            line-height: 25px;
-            transition: width 0.3s;
-            border-radius: 15px 0 0 15px;
+        &-image {
+            width: 150px;
+            height: 150px;
+            margin-bottom: 10px;
+            border-radius: 10px;
         }
     }
 
