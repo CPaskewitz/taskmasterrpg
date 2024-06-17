@@ -61,7 +61,7 @@ bossRouter.get('/boss', auth, async (req: Request, res: Response) => {
         if (!boss) {
             const level = character.level;
             const healthPoints = level * 15 + getRandomIntInclusive(5, level * 3);
-            const rewardExp = 10 * level; // Linear XP for bosses
+            const rewardExp = Math.floor(5 + level * 2); 
             const rewardGold = level * 5 + getRandomIntInclusive(3, level * 3);
 
             const bossNames = [
@@ -149,7 +149,7 @@ bossRouter.put('/boss/:id/attack', auth, async (req: Request, res: Response) => 
             await bossesCollection.deleteOne({ _id: new ObjectId(bossId) });
 
             const updatedExperience = character.experience + boss.rewardExp;
-            const levelUp = updatedExperience >= 10 * (character.level * character.level); // Quadratic XP to level up
+            const levelUp = updatedExperience >= 10 * (character.level ** 2); // Quadratic XP to level up
 
             const updatedCharacter = {
                 $set: {
@@ -205,7 +205,7 @@ bossRouter.post('/boss/new', auth, async (req: Request, res: Response) => {
 
         const level = character.level;
         const healthPoints = level * 15 + getRandomIntInclusive(5, level * 3);
-        const rewardExp = 10 * level; 
+        const rewardExp = Math.floor(5 + level * 2); // Adjusted XP for bosses
         const rewardGold = level * 5 + getRandomIntInclusive(3, level * 3);
 
         const bossNames = [
