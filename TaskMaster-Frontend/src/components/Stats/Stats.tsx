@@ -50,6 +50,26 @@ const Stats: React.FC<StatsProps> = ({ refresh }) => {
         return <div className="stats__loading">Loading...</div>;
     }
 
+    const getEquipmentByType = (type: string) => {
+        return character.equipment.find(item => item.type === type);
+    };
+
+    const renderEquipmentItem = (type: string, label: string) => {
+        const item = getEquipmentByType(type);
+        return (
+            <div className="stats__equipment-category">
+                <span className="stats__equipment-type">{label}:</span>
+                {item ? (
+                    <span className="stats__equipment-item" title={`Attack Damage +${item.damageBoost}`}>
+                        {item.name}
+                    </span>
+                ) : (
+                    <span className="stats__equipment-item">None</span>
+                )}
+            </div>
+        );
+    };
+
     return (
         <div className="stats">
             <h2 className="stats__header">Character Stats</h2>
@@ -58,15 +78,14 @@ const Stats: React.FC<StatsProps> = ({ refresh }) => {
             <div className="stats__item">Gold: <span className="stats__value">{character.gold}</span></div>
             <div className="stats__item">Attack Chances: <span className="stats__value">{character.attackChances}</span></div>
             <div className="stats__item">Attack Damage: <span className="stats__value">{character.attackDamage}</span></div>
-            <div className="stats__item">
-                Equipment:
-                <ul className="stats__equipment-list">
-                    {character.equipment.map(item => (
-                        <li key={item._id} className="stats__equipment-item" title={`Type: ${item.type}, Damage Boost: ${item.damageBoost}`}>
-                            {item.name}
-                        </li>
-                    ))}
-                </ul>
+            <div className="stats__equipment">
+                <h3 className="stats__equipment-header">Equipment:</h3>
+                <div className="stats__equipment-list">
+                    {renderEquipmentItem('weapon', 'Weapon')}
+                    {renderEquipmentItem('armor', 'Armor')}
+                    {renderEquipmentItem('gloves', 'Gloves')}
+                    {renderEquipmentItem('boots', 'Boots')}
+                </div>
             </div>
         </div>
     );
