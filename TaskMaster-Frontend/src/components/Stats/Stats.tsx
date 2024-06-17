@@ -1,5 +1,4 @@
-import React, { useState, useEffect } from 'react';
-import axios from '../../../axiosConfig';
+import React from 'react';
 import './Stats.scss';
 
 interface Character {
@@ -23,29 +22,10 @@ interface Equipment {
 
 interface StatsProps {
     refresh: boolean;
+    character: Character | null;
 }
 
-const Stats: React.FC<StatsProps> = ({ refresh }) => {
-    const [character, setCharacter] = useState<Character | null>(null);
-
-    const fetchCharacter = async () => {
-        try {
-            const response = await axios.get('/api/users/character', {
-                headers: {
-                    Authorization: `Bearer ${localStorage.getItem('token')}`
-                }
-            });
-            setCharacter(response.data);
-        } catch (error: any) {
-            console.error('Error fetching character stats:', error.response?.data || error.message);
-            alert('Failed to fetch character stats');
-        }
-    };
-
-    useEffect(() => {
-        fetchCharacter();
-    }, [refresh]);
-
+const Stats: React.FC<StatsProps> = ({ character }) => {
     if (!character) {
         return <div className="stats__loading">Loading...</div>;
     }
@@ -57,7 +37,7 @@ const Stats: React.FC<StatsProps> = ({ refresh }) => {
     const renderEquipmentItem = (type: string, label: string) => {
         const item = getEquipmentByType(type);
         return (
-            <div className="stats__equipment-category">
+            <div className="stats__equipment-category" key={type}>
                 <span className="stats__equipment-type">{label}:</span>
                 {item ? (
                     <span className="stats__equipment-item" title={`Attack Damage +${item.damageBoost}`}>

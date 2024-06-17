@@ -28,10 +28,26 @@ bossRouter.get('/boss', auth, async (req: Request, res: Response) => {
         const boss = await bossesCollection.findOne({ level: character.level });
 
         if (!boss) {
-            return res.status(404).send('Boss not found');
+            const level = character.level;
+            const healthPoints = level * 15 + getRandomIntInclusive(5, level * 3); 
+            const rewardExp = level * 3 + getRandomIntInclusive(2, level * 2); 
+            const rewardGold = level * 5 + getRandomIntInclusive(3, level * 3);
+
+            const newBoss = {
+                level,
+                healthPoints,
+                maxHealthPoints: healthPoints,
+                rewardExp,
+                rewardGold
+            };
+
+            const result = await bossesCollection.insertOne(newBoss);
+            const createdBoss = await bossesCollection.findOne({ _id: result.insertedId });
+
+            return res.status(201).send(createdBoss);
         }
 
-        res.send(boss);
+        res.send({ ...boss, maxHealthPoints: boss.maxHealthPoints || boss.healthPoints });
     } catch (err) {
         res.status(500).send('Server error');
     }
@@ -62,30 +78,33 @@ bossRouter.put('/boss/:id/attack', auth, async (req: Request, res: Response) => 
         const updatedHealth = boss.healthPoints - damage;
 
         if (updatedHealth <= 0) {
-        
             await bossesCollection.deleteOne({ _id: new ObjectId(bossId) });
 
             const updatedExperience = character.experience + boss.rewardExp;
-            const levelUp = updatedExperience >= character.level * (10 + character.level - 1); 
+            const levelUp = updatedExperience >= character.level * (20 + character.level * 2); 
 
             const updatedCharacter = {
                 $set: {
                     experience: updatedExperience,
                     level: levelUp ? character.level + 1 : character.level,
-                    attackDamage: levelUp ? character.attackDamage + 2 : character.attackDamage,
+                    attackDamage: levelUp ? character.attackDamage + 1 : character.attackDamage, 
                     gold: character.gold + boss.rewardGold,
                 },
+                $inc: {
+                    attackChances: -1
+                }
             };
 
             await charactersCollection.updateOne({ userId }, updatedCharacter);
 
-            res.send({ message: 'Boss defeated', bossDefeated: true });
+            res.send({ message: 'Boss defeated', bossDefeated: true, rewardExp: boss.rewardExp, rewardGold: boss.rewardGold, levelUp });
         } else {
-        
             await bossesCollection.updateOne(
                 { _id: new ObjectId(bossId) },
                 { $set: { healthPoints: updatedHealth } }
             );
+
+            await charactersCollection.updateOne({ userId }, { $inc: { attackChances: -1 } });
 
             res.send({ message: 'Boss attacked', healthPoints: updatedHealth });
         }
@@ -109,13 +128,14 @@ bossRouter.post('/boss/new', auth, async (req: Request, res: Response) => {
         }
 
         const level = character.level;
-        const healthPoints = level * 10 + getRandomIntInclusive(1, level * 2);
-        const rewardExp = level * 2 + getRandomIntInclusive(1, level + 1);
-        const rewardGold = level * 5 + getRandomIntInclusive(1, level * 2);
+        const healthPoints = level * 15 + getRandomIntInclusive(5, level * 3);
+        const rewardExp = level * 3 + getRandomIntInclusive(2, level * 2);
+        const rewardGold = level * 5 + getRandomIntInclusive(3, level * 3);
 
         const newBoss = {
             level,
             healthPoints,
+            maxHealthPoints: healthPoints,
             rewardExp,
             rewardGold
         };

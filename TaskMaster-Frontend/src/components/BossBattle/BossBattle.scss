@@ -13,15 +13,46 @@
         color: #333;
     }
 
-    &__boss-info {
-        margin-bottom: 20px;
+    &__boss {
 
-        &-level,
-        &-health {
+        &-info {
+            margin-bottom: 20px;
+        }
+
+        &-level {
             font-size: 1.2em;
             margin: 5px 0;
             color: #444;
         }
+
+        &-health-bar {
+            width: 80%;
+            height: 25px;
+            background-color: #e0e0e0;
+            border-radius: 15px;
+            overflow: hidden;
+            margin: 0 auto;
+            position: relative;
+            text-align: center;
+            line-height: 25px;
+            color: white;
+        }
+
+        &-health-bar-inner {
+            height: 100%;
+            background-color: #d9534f;
+            text-align: center;
+            line-height: 25px;
+            transition: width 0.3s;
+            border-radius: 15px 0 0 15px;
+        }
+    }
+
+    &__action {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin-bottom: 20px;
     }
 
     &__attack-button {
@@ -44,9 +75,25 @@
         }
     }
 
+    &__attack-chances {
+        margin-top: 10px;
+        font-size: 1.2em;
+        color: #333;
+    }
+
     &__no-chances {
         margin-top: 10px;
         color: #d9534f;
         font-size: 1em;
+    }
+
+    &__rewards {
+        margin-top: 20px;
+        font-size: 1.2em;
+        color: #4CAF50;
+
+        p {
+            margin: 5px 0;
+        }
     }
 }
