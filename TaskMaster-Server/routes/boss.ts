@@ -1,6 +1,9 @@
 import { Router, Request, Response } from 'express';
 import { ObjectId } from 'mongodb';
 import axios from 'axios';
+import fs from 'fs-extra';
+import path from 'path';
+import fetch from 'node-fetch';
 import auth from '../middleware/auth';
 import { connectDB } from '../src/db';
 import dotenv from 'dotenv';
@@ -41,6 +44,13 @@ const generateBossImage = async (prompt: string): Promise<string | null> => {
     }
 };
 
+const downloadImage = async (url: string, filepath: string) => {
+    const res = await fetch(url);
+    if (!res.ok) throw new Error(`Failed to fetch image: ${res.statusText}`);
+    const buffer = await res.buffer();
+    await fs.outputFile(filepath, buffer);
+};
+
 bossRouter.get('/boss', auth, async (req: Request, res: Response) => {
     const userId = (req as any).user.userId;
 
@@ -61,7 +71,7 @@ bossRouter.get('/boss', auth, async (req: Request, res: Response) => {
         if (!boss) {
             const level = character.level;
             const healthPoints = level * 15 + getRandomIntInclusive(5, level * 3);
-            const rewardExp = Math.floor(5 + level * 2); 
+            const rewardExp = Math.floor(5 + level * 2);
             const rewardGold = level * 5 + getRandomIntInclusive(3, level * 3);
 
             const bossNames = [
@@ -96,7 +106,10 @@ bossRouter.get('/boss', auth, async (req: Request, res: Response) => {
                     return res.status(500).send('Error generating boss image');
                 }
 
-                bossMetadata = { name: bossName, imageUrl };
+                const localImagePath = path.join(__dirname, '..', 'public', 'boss-images', `${bossName}.png`);
+                await downloadImage(imageUrl, localImagePath);
+
+                bossMetadata = { name: bossName, imageUrl: `/boss-images/${bossName}.png` };
                 await bossMetadataCollection.insertOne(bossMetadata);
             }
 
@@ -240,7 +253,10 @@ bossRouter.post('/boss/new', auth, async (req: Request, res: Response) => {
                 return res.status(500).send('Error generating boss image');
             }
 
-            bossMetadata = { name: bossName, imageUrl };
+            const localImagePath = path.join(__dirname, '..', 'public', 'boss-images', `${bossName}.png`);
+            await downloadImage(imageUrl, localImagePath);
+
+            bossMetadata = { name: bossName, imageUrl: `/boss-images/${bossName}.png` };
             await bossMetadataCollection.insertOne(bossMetadata);
         }
 
