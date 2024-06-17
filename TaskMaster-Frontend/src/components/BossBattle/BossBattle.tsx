@@ -9,6 +9,8 @@ interface Boss {
     maxHealthPoints: number;
     rewardExp: number;
     rewardGold: number;
+    name: string;
+    imageUrl: string;
 }
 
 interface Character {
@@ -102,9 +104,10 @@ const BossBattle: React.FC<BossBattleProps> = ({ refreshStats, character }) => {
 
     return (
         <div className="boss-battle">
-            <h2 className="boss-battle__header">Boss Battle</h2>
+            <h2 className="boss-battle__header">{boss.name}</h2>
             <div className="boss-battle__boss-info">
                 <p className="boss-battle__boss-level">Level: {boss.level}</p>
+                <img src={boss.imageUrl} alt={boss.name} className="boss-battle__boss-image" />
                 <div className="boss-battle__boss-health-bar">
                     <div className="boss-battle__boss-health-bar-inner" style={{ width: `${healthPercentage}%` }}>
                         {boss.healthPoints}/{boss.maxHealthPoints}
