@@ -4,11 +4,32 @@ import Stats from "../../components/Stats/Stats";
 import TaskList from "../../components/TaskList/TaskList";
 import Shop from "../../components/Shop/Shop";
 import BossBattle from "../../components/BossBattle/BossBattle";
+import CharacterLevel from "../../components/CharacterLevel/CharacterLevel";
 import axios from '../../../axiosConfig';
+
+interface Equipment {
+    _id: string;
+    name: string;
+    type: string;
+    damageBoost: number;
+    cost: number;
+    requiredLevel: number;
+}
+
+interface Character {
+    userId: string;
+    username: string;
+    level: number;
+    experience: number;
+    gold: number;
+    attackChances: number;
+    attackDamage: number;
+    equipment: Equipment[];
+}
 
 export function Home() {
     const [refreshStats, setRefreshStats] = useState(false);
-    const [character, setCharacter] = useState(null);
+    const [character, setCharacter] = useState<Character | null>(null);
 
     const triggerStatsRefresh = () => {
         setRefreshStats(!refreshStats);
@@ -35,6 +56,7 @@ export function Home() {
     return (
         <>
             <LogoutButton />
+            {character && <CharacterLevel character={character} />}
             <BossBattle refreshStats={triggerStatsRefresh} character={character} />
             <Stats refresh={refreshStats} character={character} />
             <TaskList onTaskComplete={triggerStatsRefresh} />

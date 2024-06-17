@@ -93,7 +93,10 @@ userRouter.get('/character', auth, async (req: Request, res: Response) => {
             return res.status(404).send('Character not found');
         }
 
-        res.send(character);
+        res.send({
+            ...character,
+            username: user.username 
+        });
     } catch (err) {
         res.status(500).send('Server error');
     }
