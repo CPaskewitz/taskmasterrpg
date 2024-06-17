@@ -40,9 +40,11 @@ interface BossBattleProps {
 const BossBattle: React.FC<BossBattleProps> = ({ refreshStats, character }) => {
     const [boss, setBoss] = useState<Boss | null>(null);
     const [rewards, setRewards] = useState<{ gold: number; exp: number; levelUp: boolean; newLevel?: number } | null>(null);
+    const [isLoading, setIsLoading] = useState<boolean>(true);
     const token = localStorage.getItem('token');
 
     const fetchBoss = async () => {
+        setIsLoading(true);
         try {
             const bossResponse = await axios.get('/api/boss', {
                 headers: {
@@ -53,6 +55,8 @@ const BossBattle: React.FC<BossBattleProps> = ({ refreshStats, character }) => {
         } catch (error: any) {
             console.error('Error fetching boss:', error.response?.data || error.message);
             alert('Failed to fetch boss');
+        } finally {
+            setIsLoading(false);
         }
     };
 
@@ -62,6 +66,8 @@ const BossBattle: React.FC<BossBattleProps> = ({ refreshStats, character }) => {
 
     const handleAttack = async () => {
         if (character && boss) {
+            setRewards(null); 
+            setIsLoading(true);
             try {
                 const attackResponse = await axios.put(`/api/boss/${boss._id}/attack`, {
                     damage: character.attackDamage
@@ -84,7 +90,7 @@ const BossBattle: React.FC<BossBattleProps> = ({ refreshStats, character }) => {
                             Authorization: `Bearer ${token}`
                         }
                     });
-                    fetchBoss();
+                    await fetchBoss();
                 } else {
                     setBoss({ ...boss, healthPoints: attackResponse.data.healthPoints });
                 }
@@ -92,9 +98,15 @@ const BossBattle: React.FC<BossBattleProps> = ({ refreshStats, character }) => {
             } catch (error: any) {
                 console.error('Error attacking boss:', error.response?.data || error.message);
                 alert('Failed to attack boss');
+            } finally {
+                setIsLoading(false);
             }
         }
     };
+
+    if (isLoading) {
+        return <div className="boss-battle__loading">Loading...</div>;
+    }
 
     if (!boss || !character) {
         return <div className="boss-battle__loading">Loading...</div>;

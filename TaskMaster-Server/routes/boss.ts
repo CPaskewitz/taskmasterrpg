@@ -8,6 +8,11 @@ dotenv.config();
 
 const bossRouter = Router();
 
+interface BossMetadata {
+    name: string;
+    imageUrl: string;
+}
+
 function getRandomIntInclusive(min: number, max: number) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
 }
@@ -43,6 +48,7 @@ bossRouter.get('/boss', auth, async (req: Request, res: Response) => {
         const db = await connectDB();
         const bossesCollection = db.collection('bosses');
         const charactersCollection = db.collection('characters');
+        const bossMetadataCollection = db.collection('bossMetadata');
 
         const character = await charactersCollection.findOne({ userId });
 
@@ -80,10 +86,18 @@ bossRouter.get('/boss', auth, async (req: Request, res: Response) => {
                 'Captain Crisis'
             ];
             const bossName = bossNames[getRandomIntInclusive(0, bossNames.length - 1)];
-            const imageUrl = await generateBossImage(bossName);
 
-            if (!imageUrl) {
-                return res.status(500).send('Error generating boss image');
+            let bossMetadata = await bossMetadataCollection.findOne({ name: bossName }) as BossMetadata | null;
+
+            if (!bossMetadata) {
+                const imageUrl = await generateBossImage(bossName);
+
+                if (!imageUrl) {
+                    return res.status(500).send('Error generating boss image');
+                }
+
+                bossMetadata = { name: bossName, imageUrl };
+                await bossMetadataCollection.insertOne(bossMetadata);
             }
 
             const newBoss = {
@@ -92,8 +106,8 @@ bossRouter.get('/boss', auth, async (req: Request, res: Response) => {
                 maxHealthPoints: healthPoints,
                 rewardExp,
                 rewardGold,
-                name: bossName,
-                imageUrl
+                name: bossMetadata.name,
+                imageUrl: bossMetadata.imageUrl
             };
 
             const result = await bossesCollection.insertOne(newBoss);
@@ -181,6 +195,7 @@ bossRouter.post('/boss/new', auth, async (req: Request, res: Response) => {
         const db = await connectDB();
         const bossesCollection = db.collection('bosses');
         const charactersCollection = db.collection('characters');
+        const bossMetadataCollection = db.collection('bossMetadata');
 
         const character = await charactersCollection.findOne({ userId });
 
@@ -215,10 +230,18 @@ bossRouter.post('/boss/new', auth, async (req: Request, res: Response) => {
             'Captain Crisis'
         ];
         const bossName = bossNames[getRandomIntInclusive(0, bossNames.length - 1)];
-        const imageUrl = await generateBossImage(bossName);
 
-        if (!imageUrl) {
-            return res.status(500).send('Error generating boss image');
+        let bossMetadata = await bossMetadataCollection.findOne({ name: bossName }) as BossMetadata | null;
+
+        if (!bossMetadata) {
+            const imageUrl = await generateBossImage(bossName);
+
+            if (!imageUrl) {
+                return res.status(500).send('Error generating boss image');
+            }
+
+            bossMetadata = { name: bossName, imageUrl };
+            await bossMetadataCollection.insertOne(bossMetadata);
         }
 
         const newBoss = {
@@ -227,8 +250,8 @@ bossRouter.post('/boss/new', auth, async (req: Request, res: Response) => {
             maxHealthPoints: healthPoints,
             rewardExp,
             rewardGold,
-            name: bossName,
-            imageUrl
+            name: bossMetadata.name,
+            imageUrl: bossMetadata.imageUrl
         };
 
         const result = await bossesCollection.insertOne(newBoss);
