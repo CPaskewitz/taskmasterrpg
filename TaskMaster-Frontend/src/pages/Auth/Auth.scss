@@ -9,13 +9,13 @@
     }
 
     &__title {
-        margin-bottom: 20px;
+        margin-bottom: 16px;
         font-size: 2rem;
         color: #333;
     }
 
     &__header {
-        margin-bottom: 20px;
+        margin-bottom: 16px;
         font-size: 1.5rem;
         color: #333;
     }
@@ -24,7 +24,7 @@
     &__form {
         display: flex;
         flex-direction: column;
-        width: 300px;
+        width: 18.75rem;
         padding: 20px;
         background-color: #fff;
         border-radius: 8px;
@@ -45,12 +45,12 @@
                 padding: 8px;
                 border: 1px solid #ddd;
                 border-radius: 4px;
-                font-size: 16px;
+                font-size: 1rem;
             }
 
             &__error {
                 color: red;
-                font-size: 12px;
+                font-size: 0.75rem;
                 margin-top: 5px;
             }
         }
@@ -61,7 +61,7 @@
             color: #fff;
             border: none;
             border-radius: 4px;
-            font-size: 16px;
+            font-size: 1rem;
             cursor: pointer;
             transition: background-color 0.3s;
 
@@ -78,7 +78,7 @@
         color: #fff;
         border: none;
         border-radius: 4px;
-        font-size: 16px;
+        font-size: 1rem;
         cursor: pointer;
         transition: background-color 0.3s;
 

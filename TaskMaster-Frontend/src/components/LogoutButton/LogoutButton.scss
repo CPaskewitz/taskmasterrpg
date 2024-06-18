@@ -15,13 +15,13 @@
 
     @include tablet {
         position: absolute;
-        width: 96px;
+        width: 6rem;
         top: 24px;
         right: 32px;
     }
 
     @include desktop {
-        width: 128px;
+        width: 8rem;
         padding: 15px;
         top: 74px;
         right: 80px;
