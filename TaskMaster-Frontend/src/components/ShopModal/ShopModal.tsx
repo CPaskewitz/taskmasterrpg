@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from '../../../axiosConfig';
-import './Shop.scss';
+import './ShopModal.scss';
 
 interface Equipment {
     _id: string;
@@ -11,11 +11,12 @@ interface Equipment {
     requiredLevel: number;
 }
 
-interface ShopProps {
+interface ShopModalProps {
+    onClose: () => void;
     onPurchase: () => void;
 }
 
-const Shop: React.FC<ShopProps> = ({ onPurchase }) => {
+const ShopModal: React.FC<ShopModalProps> = ({ onClose, onPurchase }) => {
     const [equipmentItems, setEquipmentItems] = useState<Equipment[]>([]);
     const [characterEquipment, setCharacterEquipment] = useState<Equipment[]>([]);
     const token = localStorage.getItem('token');
@@ -28,7 +29,7 @@ const Shop: React.FC<ShopProps> = ({ onPurchase }) => {
                         Authorization: `Bearer ${token}`
                     }
                 });
-                setEquipmentItems(response.data);  // Corrected to set the state directly from response.data
+                setEquipmentItems(response.data);
 
                 const characterResponse = await axios.get('/api/users/character', {
                     headers: {
@@ -54,6 +55,7 @@ const Shop: React.FC<ShopProps> = ({ onPurchase }) => {
             });
             alert('Equipment purchased successfully');
             onPurchase();
+            onClose();
 
             const purchasedItem = equipmentItems.find(item => item._id === equipmentId);
             if (purchasedItem) {
@@ -70,30 +72,35 @@ const Shop: React.FC<ShopProps> = ({ onPurchase }) => {
     };
 
     return (
-        <div className="shop">
-            <h2 className="shop__header">Shop</h2>
-            <ul className="shop__list">
-                {equipmentItems && equipmentItems.length > 0 ? (
-                    equipmentItems.map(item => (
-                        <li key={item._id} className="shop__item">
-                            <span className="shop__item-name">{item.name}</span>
-                            <span className="shop__item-cost">Cost: {item.cost} Gold</span>
-                            <span className="shop__item-damage">Attack Damage: {item.damageBoost}</span>
-                            <button
-                                className="shop__item-button"
-                                onClick={() => handlePurchase(item._id)}
-                                disabled={isEquipmentOwned(item._id)}
-                            >
-                                {isEquipmentOwned(item._id) ? 'Owned' : 'Buy'}
-                            </button>
-                        </li>
-                    ))
-                ) : (
-                    <li className="shop__item">No equipment available</li>
-                )}
-            </ul>
+        <div className="shop-modal__overlay">
+            <div className="shop-modal">
+                <button className="shop-modal__close-button" onClick={onClose}>
+                    &times;
+                </button>
+                <h2 className="shop-modal__header">Shop</h2>
+                <ul className="shop-modal__list">
+                    {equipmentItems && equipmentItems.length > 0 ? (
+                        equipmentItems.map(item => (
+                            <li key={item._id} className="shop-modal__item">
+                                <span className="shop-modal__item-name">{item.name}</span>
+                                <span className="shop-modal__item-cost">Cost: {item.cost} Gold</span>
+                                <span className="shop-modal__item-damage">Attack Damage +{item.damageBoost}</span>
+                                <button
+                                    className="shop-modal__item-button"
+                                    onClick={() => handlePurchase(item._id)}
+                                    disabled={isEquipmentOwned(item._id)}
+                                >
+                                    {isEquipmentOwned(item._id) ? 'Owned' : 'Buy'}
+                                </button>
+                            </li>
+                        ))
+                    ) : (
+                        <li className="shop-modal__item">No equipment available</li>
+                    )}
+                </ul>
+            </div>
         </div>
     );
 };
 
-export default Shop;
+export default ShopModal;

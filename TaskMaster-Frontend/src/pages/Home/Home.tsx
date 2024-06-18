@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import LogoutButton from "../../components/LogoutButton/LogoutButton";
 import Stats from "../../components/Stats/Stats";
 import TaskList from "../../components/TaskList/TaskList";
-import Shop from "../../components/Shop/Shop";
+import ShopModal from "../../components/ShopModal/ShopModal";
 import BossBattle from "../../components/BossBattle/BossBattle";
 import CharacterLevel from "../../components/CharacterLevel/CharacterLevel";
 import axios from '../../../axiosConfig';
@@ -31,6 +31,7 @@ interface Character {
 export function Home() {
     const [refreshStats, setRefreshStats] = useState(false);
     const [character, setCharacter] = useState<Character | null>(null);
+    const [isShopModalOpen, setIsShopModalOpen] = useState<boolean>(false); // State for shop modal visibility
 
     const triggerStatsRefresh = () => {
         setRefreshStats(!refreshStats);
@@ -54,13 +55,27 @@ export function Home() {
         fetchCharacter();
     }, [refreshStats]);
 
+    const openShopModal = () => {
+        setIsShopModalOpen(true);
+    };
+
+    const closeShopModal = () => {
+        setIsShopModalOpen(false);
+    };
+
     return (
         <div className="home__container">
+            <img
+                src="/assets/images/shop.png"
+                alt="Shop"
+                className="shop__image"
+                onClick={openShopModal}
+            />
+            {isShopModalOpen && <ShopModal onClose={closeShopModal} onPurchase={triggerStatsRefresh} />}
             {character && <CharacterLevel character={character} />}
             <BossBattle refreshStats={triggerStatsRefresh} character={character} />
             <Stats refresh={refreshStats} character={character} />
             <TaskList onTaskComplete={triggerStatsRefresh} />
-            <Shop onPurchase={triggerStatsRefresh} />
             <LogoutButton />
         </div>
     );
