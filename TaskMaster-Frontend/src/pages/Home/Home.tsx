@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import LogoutButton from "../../components/LogoutButton/LogoutButton";
-import Stats from "../../components/Stats/Stats";
+import StatsModal from "../../components/StatsModal/StatsModal";
 import TaskList from "../../components/TaskList/TaskList";
 import ShopModal from "../../components/ShopModal/ShopModal";
 import BossBattle from "../../components/BossBattle/BossBattle";
@@ -32,6 +32,7 @@ export function Home() {
     const [refreshStats, setRefreshStats] = useState(false);
     const [character, setCharacter] = useState<Character | null>(null);
     const [isShopModalOpen, setIsShopModalOpen] = useState<boolean>(false); // State for shop modal visibility
+    const [isStatsModalOpen, setIsStatsModalOpen] = useState<boolean>(false); // State for stats modal visibility
 
     const triggerStatsRefresh = () => {
         setRefreshStats(!refreshStats);
@@ -63,18 +64,34 @@ export function Home() {
         setIsShopModalOpen(false);
     };
 
+    const openStatsModal = () => {
+        setIsStatsModalOpen(true);
+    };
+
+    const closeStatsModal = () => {
+        setIsStatsModalOpen(false);
+    };
+
     return (
         <div className="home__container">
-            <img
-                src="/assets/images/shop.png"
-                alt="Shop"
-                className="shop__image"
-                onClick={openShopModal}
-            />
-            {isShopModalOpen && <ShopModal onClose={closeShopModal} onPurchase={triggerStatsRefresh} />}
-            {character && <CharacterLevel character={character} />}
+            <div className="home__top-bar">
+                <img
+                    src="/assets/images/shop.png"
+                    alt="Shop"
+                    className="shop__image"
+                    onClick={openShopModal}
+                />
+                {isShopModalOpen && <ShopModal onClose={closeShopModal} onPurchase={triggerStatsRefresh} />}
+                {character && <CharacterLevel character={character} />}
+                <img
+                    src="/assets/images/character.png"
+                    alt="Character"
+                    className="character__image"
+                    onClick={openStatsModal}
+                />
+                {isStatsModalOpen && <StatsModal onClose={closeStatsModal} character={character} />}
+            </div>
             <BossBattle refreshStats={triggerStatsRefresh} character={character} />
-            <Stats refresh={refreshStats} character={character} />
             <TaskList onTaskComplete={triggerStatsRefresh} />
             <LogoutButton />
         </div>
