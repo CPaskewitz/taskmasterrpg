@@ -19,12 +19,18 @@ const DailyTasks: React.FC<{ tasks: Task[], onComplete: (id: string) => void, on
                     <span>{task.description}</span>
                     <span>{task.countdown <= 0 ? '0 minutes left' : `${task.countdown} minutes left`}</span>
                     <button
+                        className="complete-button"
                         onClick={() => onComplete(task._id)}
                         disabled={task.countdown > 0 || task.completed}
                     >
                         {task.completed ? 'Completed' : 'Complete Task'}
                     </button>
-                    <button onClick={() => onDelete(task._id)}>Delete</button>
+                    <button
+                        className="delete-button"
+                        onClick={() => onDelete(task._id)}
+                    >
+                        Delete
+                    </button>
                 </li>
             ))}
         </ul>

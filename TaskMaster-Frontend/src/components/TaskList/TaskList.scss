@@ -62,17 +62,29 @@
                 padding: 5px 10px;
                 border-radius: 5px;
                 border: none;
-                background: #28a745;
-                color: white;
                 cursor: pointer;
 
-                &:disabled {
-                    background: #ccc;
-                    cursor: not-allowed;
+                &.complete-button {
+                    background: #28a745;
+                    color: white;
+
+                    &:disabled {
+                        background: #ccc;
+                        cursor: not-allowed;
+                    }
+
+                    &:hover:not(:disabled) {
+                        background: #218838;
+                    }
                 }
 
-                &:hover:not(:disabled) {
-                    background: #218838;
+                &.delete-button {
+                    background: #dc3545;
+                    color: white;
+
+                    &:hover {
+                        background: #c82333;
+                    }
                 }
             }
         }
