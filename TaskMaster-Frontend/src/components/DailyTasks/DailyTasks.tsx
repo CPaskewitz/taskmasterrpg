@@ -10,33 +10,52 @@ interface Task {
     type: 'daily' | 'general';
 }
 
-const DailyTasks: React.FC<{ tasks: Task[], onComplete: (id: string) => void, onDelete: (id: string) => void }> = ({ tasks, onComplete, onDelete }) => (
-    <div className="task-section">
-        <h3>Daily Quests</h3>
-        <ul>
-            {tasks.filter(task => task.type === 'daily').map((task) => (
-                <li key={task._id}>
-                    <span>{task.description}</span>
-                    <div className="task__wrapper">
-                        <span className='task__countdown'>{task.countdown <= 0 ? '0 min left' : `${task.countdown} min left`}</span>
-                        <button
-                            className="complete-button"
-                            onClick={() => onComplete(task._id)}
-                            disabled={task.countdown > 0 || task.completed}
-                        >
-                            {task.completed ? 'Completed' : 'Complete Task'}
-                        </button>
-                        <button
-                            className="delete-button"
-                            onClick={() => onDelete(task._id)}
-                        >
-                            Delete
-                        </button>
-                    </div>
-                </li>
-            ))}
-        </ul>
-    </div>
-);
+interface DailyTasksProps {
+    tasks: Task[];
+    onComplete: (id: string) => void;
+    onDelete: (id: string) => void;
+    coinReward: { id: string | null, reward: number };
+}
+
+const DailyTasks: React.FC<DailyTasksProps> = ({ tasks, onComplete, onDelete, coinReward }) => {
+    const handleComplete = (id: string) => {
+        onComplete(id);
+    };
+
+    return (
+        <div className="task-section">
+            <h3>Daily Quests</h3>
+            <ul>
+                {tasks.filter(task => task.type === 'daily').map((task) => (
+                    <li key={task._id}>
+                        <span>{task.description}</span>
+                        <div className="task__wrapper">
+                            <span className='task__countdown'>{task.countdown <= 0 ? '0 min left' : `${task.countdown} min left`}</span>
+                            <button
+                                className="complete-button"
+                                onClick={() => handleComplete(task._id)}
+                                disabled={task.countdown > 0 || task.completed}
+                            >
+                                {task.completed ? 'Completed' : 'Complete Task'}
+                            </button>
+                            <button
+                                className="delete-button"
+                                onClick={() => onDelete(task._id)}
+                            >
+                                Delete
+                            </button>
+                            {coinReward.id === task._id && (
+                                <div className="coin-reward">
+                                    <img src="/assets/images/coins.png" alt="Coins" />
+                                    <span>+{coinReward.reward}</span>
+                                </div>
+                            )}
+                        </div>
+                    </li>
+                ))}
+            </ul>
+        </div>
+    );
+};
 
 export default DailyTasks;

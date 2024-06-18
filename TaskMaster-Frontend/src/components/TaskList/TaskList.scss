@@ -121,3 +121,50 @@
         }
     }
 }
+
+.coin-reward {
+    display: flex;
+    align-items: center;
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    animation: moveUp 3s forwards, fadeOut 3s forwards;
+
+    img {
+        width: 32px;
+        height: 32px;
+    }
+
+    span {
+        font-size: 1.2em;
+        color: gold;
+        margin-left: 5px;
+    }
+}
+
+@keyframes moveUp {
+    0% {
+        bottom: 0;
+        opacity: 1;
+    }
+
+    100% {
+        bottom: 50px;
+        opacity: 1;
+    }
+}
+
+@keyframes fadeOut {
+    0% {
+        opacity: 1;
+    }
+
+    90% {
+        opacity: 1;
+    }
+
+    100% {
+        opacity: 0;
+    }
+}

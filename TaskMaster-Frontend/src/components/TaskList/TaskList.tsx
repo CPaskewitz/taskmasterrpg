@@ -24,6 +24,7 @@ const TaskList: React.FC<TaskListProps> = ({ onTaskComplete }) => {
     const [estimatedTime, setEstimatedTime] = useState(1);
     const [taskType, setTaskType] = useState<'daily' | 'general'>('general');
     const [showForm, setShowForm] = useState(false);
+    const [coinReward, setCoinReward] = useState<{ id: string | null, reward: number }>({ id: null, reward: 0 });
     const navigate = useNavigate();
     const token = localStorage.getItem('token');
 
@@ -85,7 +86,10 @@ const TaskList: React.FC<TaskListProps> = ({ onTaskComplete }) => {
                     Authorization: `Bearer ${token}`
                 }
             });
-            setTasks(tasks.map(task => (task._id === id ? response.data : task)));
+            const { data: updatedTask } = response;
+            setTasks(tasks.map(task => (task._id === id ? updatedTask : task)));
+            setCoinReward({ id, reward: updatedTask.goldReward });
+            setTimeout(() => setCoinReward({ id: null, reward: 0 }), 3000); 
             onTaskComplete();
         } catch (error: any) {
             console.error('Error completing task:', error.response?.data || error.message);
@@ -162,8 +166,8 @@ const TaskList: React.FC<TaskListProps> = ({ onTaskComplete }) => {
                     <button type="submit">Add Quest</button>
                 </form>
             )}
-            <DailyTasks tasks={tasks} onComplete={handleCompleteTask} onDelete={handleDeleteTask} />
-            <GeneralTasks tasks={tasks} onComplete={handleCompleteTask} onDelete={handleDeleteTask} />
+            <DailyTasks tasks={tasks} onComplete={handleCompleteTask} onDelete={handleDeleteTask} coinReward={coinReward} />
+            <GeneralTasks tasks={tasks} onComplete={handleCompleteTask} onDelete={handleDeleteTask} coinReward={coinReward} />
         </div>
     );
 };

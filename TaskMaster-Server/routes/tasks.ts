@@ -85,11 +85,12 @@ taskRouter.put('/tasks/:id', auth, async (req: Request, res: Response) => {
             return res.status(404).send('Task not found');
         }
 
+        let goldReward = 0;
         if (updates.completed && !task.completed) {
-            const goldReward = Math.max(1, Math.floor(task.estimatedTime / 10));
+            goldReward = Math.max(1, Math.floor(task.estimatedTime / 10));
 
-            const updateResult = await charactersCollection.updateOne(
-                { userId: userId }, 
+            await charactersCollection.updateOne(
+                { userId: userId },
                 {
                     $inc: {
                         attackChances: 1,
@@ -102,7 +103,7 @@ taskRouter.put('/tasks/:id', auth, async (req: Request, res: Response) => {
         await tasksCollection.updateOne({ _id: new ObjectId(taskId) }, { $set: updates });
 
         const updatedTask = await tasksCollection.findOne({ _id: new ObjectId(taskId), userId });
-        res.send(updatedTask);
+        res.send({ ...updatedTask, goldReward });
     } catch (err) {
         res.status(500).send('Server error');
     }
