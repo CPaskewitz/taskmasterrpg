@@ -1,5 +1,9 @@
+@use '../../partials/mixins' as *;
+@use '../../partials/variables' as *;
+
 .logout-button {
     padding: 10px 20px;
+    margin-top: 16px;
     background-color: #dc3545;
     color: #fff;
     border: none;
@@ -8,6 +12,17 @@
     cursor: pointer;
     transition: background-color 0.3s;
     width: 100%;
+
+    @include tablet {
+        margin-top: 24px;
+    }
+
+    @include desktop {
+        position: absolute;
+        width: 96px;
+        top: 72px;
+        right: 80px;
+    }
 
     &:hover {
         background-color: #c82333;
