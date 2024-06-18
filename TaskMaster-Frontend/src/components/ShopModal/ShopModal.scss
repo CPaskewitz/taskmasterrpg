@@ -1,7 +1,7 @@
 .shop-modal {
     padding: 16px;
     border-radius: 8px;
-    width: 304px;
+    width: 18.75rem;
     position: relative;
     background: #f4f4f4;
     background: url('/assets/images/parchment.jpg');
@@ -30,12 +30,12 @@
         right: 16px;
         background: none;
         border: none;
-        font-size: 24px;
+        font-size: 1.5rem;
         cursor: pointer;
     }
 
     &__header {
-        font-size: 24px;
+        font-size: 1.5rem;
         margin-bottom: 16px;
     }
 
