@@ -123,7 +123,7 @@ const TaskList: React.FC<TaskListProps> = ({ onTaskComplete }) => {
 
     return (
         <div className="task-list">
-            <h2>Task List</h2>
+            <h2>Quest List</h2>
             <button onClick={() => setShowForm(!showForm)}>
                 {showForm ? 'Hide Form' : 'Show Form'}
             </button>
@@ -139,7 +139,7 @@ const TaskList: React.FC<TaskListProps> = ({ onTaskComplete }) => {
                         />
                     </div>
                     <div>
-                        <label>Estimated Time (minutes)</label>
+                        <label>Estimated Time</label>
                         <select
                             value={estimatedTime}
                             onChange={(e) => setEstimatedTime(Number(e.target.value))}
@@ -159,7 +159,7 @@ const TaskList: React.FC<TaskListProps> = ({ onTaskComplete }) => {
                             <option value="daily">Daily</option>
                         </select>
                     </div>
-                    <button type="submit">Add Task</button>
+                    <button type="submit">Add Quest</button>
                 </form>
             )}
             <DailyTasks tasks={tasks} onComplete={handleCompleteTask} onDelete={handleDeleteTask} />

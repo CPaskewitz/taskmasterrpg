@@ -12,7 +12,7 @@ interface Task {
 
 const DailyTasks: React.FC<{ tasks: Task[], onComplete: (id: string) => void, onDelete: (id: string) => void }> = ({ tasks, onComplete, onDelete }) => (
     <div className="task-section">
-        <h3>Daily Tasks</h3>
+        <h3>Daily Quests</h3>
         <ul>
             {tasks.filter(task => task.type === 'daily').map((task) => (
                 <li key={task._id}>

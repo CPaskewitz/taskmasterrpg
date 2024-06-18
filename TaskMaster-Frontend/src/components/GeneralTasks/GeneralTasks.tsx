@@ -12,7 +12,7 @@ interface Task {
 
 const GeneralTasks: React.FC<{ tasks: Task[], onComplete: (id: string) => void, onDelete: (id: string) => void }> = ({ tasks, onComplete, onDelete }) => (
     <div className="task-section">
-        <h3>General Tasks</h3>
+        <h3>General Quests</h3>
         <ul>
             {tasks.filter(task => task.type === 'general').map((task) => (
                 <li key={task._id}>
