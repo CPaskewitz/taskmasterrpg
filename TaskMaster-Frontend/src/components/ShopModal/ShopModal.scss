@@ -1,9 +1,15 @@
 .shop-modal {
-    background-color: #fff;
-    padding: 20px;
+    padding: 16px;
     border-radius: 8px;
     width: 304px;
     position: relative;
+    background: #f4f4f4;
+    background: url('/assets/images/parchment.jpg');
+    background-size: cover;
+    border: 1px solid #d4a373;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    color: #333;
 
     &__overlay {
         position: fixed;
@@ -21,7 +27,7 @@
     &__close-button {
         position: absolute;
         top: 10px;
-        right: 10px;
+        right: 16px;
         background: none;
         border: none;
         font-size: 24px;
@@ -30,7 +36,7 @@
 
     &__header {
         font-size: 24px;
-        margin-bottom: 10px;
+        margin-bottom: 16px;
     }
 
     &__list {
@@ -44,7 +50,7 @@
         justify-content: center;
         align-items: center;
         padding: 10px;
-        border: 1px solid #ccc;
+        border: 1px solid #d4a373;
         margin-bottom: 10px;
 
         &-name {
