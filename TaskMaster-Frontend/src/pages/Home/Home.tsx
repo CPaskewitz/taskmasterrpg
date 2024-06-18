@@ -76,20 +76,20 @@ export function Home() {
         <div className="home__container">
             <div className="home__top-bar">
                 <img
-                    src="/assets/images/shop.png"
-                    alt="Shop"
-                    className="shop__image"
-                    onClick={openShopModal}
-                />
-                {isShopModalOpen && <ShopModal onClose={closeShopModal} onPurchase={triggerStatsRefresh} />}
-                {character && <CharacterLevel character={character} />}
-                <img
                     src="/assets/images/character.png"
                     alt="Character"
                     className="character__image"
                     onClick={openStatsModal}
                 />
                 {isStatsModalOpen && <StatsModal onClose={closeStatsModal} character={character} />}
+                {character && <CharacterLevel character={character} />}
+                <img
+                    src="/assets/images/shop.png"
+                    alt="Shop"
+                    className="shop__image"
+                    onClick={openShopModal}
+                />
+                {isShopModalOpen && <ShopModal onClose={closeShopModal} onPurchase={triggerStatsRefresh} />}
             </div>
             <BossBattle refreshStats={triggerStatsRefresh} character={character} />
             <TaskList onTaskComplete={triggerStatsRefresh} />
