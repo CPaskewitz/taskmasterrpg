@@ -12,10 +12,6 @@
     text-align: center;
     line-height: 25px;
 
-    @include tablet {
-        width: 425px;
-    }
-
     &-inner {
         height: 100%;
         background-color: #d9534f;
