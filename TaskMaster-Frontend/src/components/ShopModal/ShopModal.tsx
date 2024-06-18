@@ -71,6 +71,21 @@ const ShopModal: React.FC<ShopModalProps> = ({ onClose, onPurchase }) => {
         return characterEquipment.some(item => item._id === equipmentId);
     };
 
+    const getEquipmentIcon = (type: string) => {
+        switch (type) {
+            case 'weapon':
+                return '/assets/images/weapon.png';
+            case 'armor':
+                return '/assets/images/armor.png';
+            case 'boots':
+                return '/assets/images/boots.png';
+            case 'gloves':
+                return '/assets/images/gloves.png';
+            default:
+                return '';
+        }
+    };
+
     return (
         <div className="shop-modal__overlay">
             <div className="shop-modal">
@@ -82,6 +97,11 @@ const ShopModal: React.FC<ShopModalProps> = ({ onClose, onPurchase }) => {
                     {equipmentItems && equipmentItems.length > 0 ? (
                         equipmentItems.map(item => (
                             <li key={item._id} className="shop-modal__item">
+                                <img
+                                    src={getEquipmentIcon(item.type)}
+                                    alt={item.type}
+                                    className="shop-modal__item-icon"
+                                />
                                 <span className="shop-modal__item-name">{item.name}</span>
                                 <span className="shop-modal__item-cost">Cost: {item.cost} Gold</span>
                                 <span className="shop-modal__item-damage">Attack Damage +{item.damageBoost}</span>

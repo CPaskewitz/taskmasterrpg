@@ -41,7 +41,7 @@
     &__item {
         display: flex;
         flex-direction: column;
-        justify-content: space-between;
+        justify-content: center;
         align-items: center;
         padding: 10px;
         border: 1px solid #ccc;
@@ -49,11 +49,13 @@
 
         &-name {
             font-weight: bold;
+            margin-top: 5px;
         }
 
         &-cost,
         &-damage {
             text-align: center;
+            margin-top: 5px;
         }
 
         &-button {
@@ -70,6 +72,11 @@
                 background-color: #ccc;
                 cursor: not-allowed;
             }
+        }
+
+        &-icon {
+            width: 32px;
+            height: 32px;
         }
     }
 }
