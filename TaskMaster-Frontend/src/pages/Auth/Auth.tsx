@@ -67,7 +67,7 @@ const Auth: React.FC = () => {
         }
 
         const endpoint = isLogin ? '/api/users/login' : '/api/users/register';
-        const userData = { username, password };
+        const userData = isLogin ? { username, password } : { username, password, confirmPassword };
 
         try {
             const response = await axios.post(endpoint, userData);
@@ -96,6 +96,7 @@ const Auth: React.FC = () => {
 
     return (
         <div className='auth__container'>
+            <h1 className="auth__title">QuestListRPG</h1>
             <h2 className='auth__header'>{isLogin ? 'Login' : 'Register'}</h2>
             <form className='auth__form' onSubmit={handleSubmit}>
                 <div className='auth__form__group'>

@@ -47,7 +47,7 @@ userRouter.post('/register', async (req: Request, res: Response) => {
         return res.status(400).send({ passwordError });
     }
     if (password !== confirmPassword) {
-        return res.status(400).send({ passwordError: 'Passwords do not match' });
+        return res.status(400).send({ confirmPasswordError: 'Passwords do not match' });
     }
 
     try {
