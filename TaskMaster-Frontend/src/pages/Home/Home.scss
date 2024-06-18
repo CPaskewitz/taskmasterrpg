@@ -17,7 +17,9 @@
 
     &__top-bar {
         display: flex;
-        justify-content: space-between;
+        width: 100%;
+        justify-content: center;
+        gap: 4px;
     }
 }
 
