@@ -34,11 +34,30 @@ const StatsModal: React.FC<StatsModalProps> = ({ character, onClose }) => {
         return character.equipment.find(item => item.type === type);
     };
 
-    const renderEquipmentItem = (type: string, label: string) => {
+    const getEquipmentIcon = (type: string) => {
+        switch (type) {
+            case 'weapon':
+                return '/assets/images/weapon.png';
+            case 'armor':
+                return '/assets/images/armor.png';
+            case 'boots':
+                return '/assets/images/boots.png';
+            case 'gloves':
+                return '/assets/images/gloves.png';
+            default:
+                return '';
+        }
+    };
+
+    const renderEquipmentItem = (type: string) => {
         const item = getEquipmentByType(type);
         return (
             <div className="stats-modal__equipment-category" key={type}>
-                <span className="stats-modal__equipment-type">{label}:</span>
+                <img
+                    src={getEquipmentIcon(type)}
+                    alt={type}
+                    className="stats-modal__equipment-icon"
+                />
                 {item ? (
                     <span className="stats-modal__equipment-item" title={`Attack Damage +${item.damageBoost}`}>
                         {item.name}
@@ -65,10 +84,10 @@ const StatsModal: React.FC<StatsModalProps> = ({ character, onClose }) => {
                 <div className="stats-modal__equipment">
                     <h3 className="stats-modal__equipment-header">Equipment:</h3>
                     <div className="stats-modal__equipment-list">
-                        {renderEquipmentItem('weapon', 'Weapon')}
-                        {renderEquipmentItem('armor', 'Armor')}
-                        {renderEquipmentItem('gloves', 'Gloves')}
-                        {renderEquipmentItem('boots', 'Boots')}
+                        {renderEquipmentItem('weapon')}
+                        {renderEquipmentItem('armor')}
+                        {renderEquipmentItem('gloves')}
+                        {renderEquipmentItem('boots')}
                     </div>
                 </div>
             </div>
