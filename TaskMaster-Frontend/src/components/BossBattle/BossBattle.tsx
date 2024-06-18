@@ -119,7 +119,7 @@ const BossBattle: React.FC<BossBattleProps> = ({ refreshStats, character }) => {
         <div className="boss-battle">
             <h2 className="boss-battle__header">{boss.name}</h2>
             <div className="boss-battle__boss-info">
-                <p className="boss-battle__boss-level">Level: {boss.level}</p>
+                <p className="boss-battle__boss-level">Level {boss.level}</p>
                 <img src={`${baseURL}${boss.imageUrl}`} alt={boss.name} className="boss-battle__boss-image" />
                 <BossHealthBar healthPoints={boss.healthPoints} maxHealthPoints={boss.maxHealthPoints} />
             </div>

@@ -14,13 +14,16 @@
     width: 100%;
 
     @include tablet {
-        margin-top: 24px;
+        position: absolute;
+        width: 96px;
+        top: 24px;
+        right: 32px;
     }
 
     @include desktop {
-        position: absolute;
-        width: 96px;
-        top: 72px;
+        width: 128px;
+        padding: 15px;
+        top: 74px;
         right: 80px;
     }
 
