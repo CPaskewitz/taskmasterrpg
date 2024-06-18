@@ -18,7 +18,7 @@ const GeneralTasks: React.FC<{ tasks: Task[], onComplete: (id: string) => void, 
                 <li key={task._id}>
                     <span>{task.description}</span>
                     <div className="task__wrapper">
-                        <span>{task.countdown <= 0 ? '0 minutes left' : `${task.countdown} minutes left`}</span>
+                        <span className='task__countdown'>{task.countdown <= 0 ? '0 min left' : `${task.countdown} min left`}</span>
                         <button
                             className="complete-button"
                             onClick={() => onComplete(task._id)}
