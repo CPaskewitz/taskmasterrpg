@@ -6,6 +6,7 @@ import Shop from "../../components/Shop/Shop";
 import BossBattle from "../../components/BossBattle/BossBattle";
 import CharacterLevel from "../../components/CharacterLevel/CharacterLevel";
 import axios from '../../../axiosConfig';
+import './Home.scss';
 
 interface Equipment {
     _id: string;
@@ -54,13 +55,13 @@ export function Home() {
     }, [refreshStats]);
 
     return (
-        <>
-            <LogoutButton />
+        <div className="home__container">
             {character && <CharacterLevel character={character} />}
             <BossBattle refreshStats={triggerStatsRefresh} character={character} />
             <Stats refresh={refreshStats} character={character} />
             <TaskList onTaskComplete={triggerStatsRefresh} />
             <Shop onPurchase={triggerStatsRefresh} />
-        </>
+            <LogoutButton />
+        </div>
     );
 }

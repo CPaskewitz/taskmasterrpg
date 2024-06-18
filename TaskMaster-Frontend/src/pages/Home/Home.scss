@@ -1,0 +1,14 @@
+@use "../../partials/mixins" as *;
+@use "../../partials/variables" as *;
+
+.home__container {
+    margin: 16px;
+
+    @include tablet {
+        margin: 24px;
+    }
+
+    @include desktop {
+        margin: 80px;
+    }
+}
