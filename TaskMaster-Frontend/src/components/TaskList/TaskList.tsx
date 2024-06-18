@@ -153,7 +153,7 @@ const TaskList: React.FC<TaskListProps> = ({ onTaskComplete }) => {
                         </select>
                     </div>
                     <div>
-                        <label>Task Type</label>
+                        <label>Quest Type</label>
                         <select value={taskType} onChange={(e) => setTaskType(e.target.value as 'daily' | 'general')}>
                             <option value="general">General</option>
                             <option value="daily">Daily</option>
