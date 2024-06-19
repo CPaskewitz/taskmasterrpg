@@ -70,7 +70,7 @@ userRouter.post('/register', async (req: Request, res: Response) => {
             experience: 0,
             gold: 0,
             attackChances: 0,
-            attackDamage: 1,
+            attackDamage: 4,
             equipment: []
         };
         const characterResult = await charactersCollection.insertOne(newCharacter);
