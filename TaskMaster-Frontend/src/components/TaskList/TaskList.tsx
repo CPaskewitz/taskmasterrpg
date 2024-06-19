@@ -127,7 +127,7 @@ const TaskList: React.FC<TaskListProps> = ({ onTaskComplete }) => {
 
     return (
         <div className="task-list">
-            <h2 className="task-list__header">Quest List</h2>
+            <h1 className="task-list__header">Quest List</h1>
             <button className="task-list__toggle-form-button" onClick={() => setShowForm(!showForm)}>
                 {showForm ? 'Hide Form' : 'Show Form'}
             </button>

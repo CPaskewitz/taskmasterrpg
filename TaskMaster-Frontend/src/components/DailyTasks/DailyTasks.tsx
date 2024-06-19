@@ -24,7 +24,7 @@ const DailyTasks: React.FC<DailyTasksProps> = ({ tasks, onComplete, onDelete, co
 
     return (
         <div className="task-section">
-            <h3>Daily Quests</h3>
+            <h3 className="task-section__header">Daily Quests</h3>
             <ul className="task-section__list">
                 {tasks.filter(task => task.type === 'daily').map((task) => (
                     <li key={task._id} className="task-section__item">

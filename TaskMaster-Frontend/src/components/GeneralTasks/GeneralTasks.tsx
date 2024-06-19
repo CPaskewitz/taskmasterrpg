@@ -24,7 +24,7 @@ const GeneralTasks: React.FC<GeneralTasksProps> = ({ tasks, onComplete, onDelete
 
     return (
         <div className="task-section">
-            <h3>General Quests</h3>
+            <h3 className="task-section__header">General Quests</h3>
             <ul className="task-section__list">
                 {tasks.filter(task => task.type === 'general').map((task) => (
                     <li key={task._id} className="task-section__item">
