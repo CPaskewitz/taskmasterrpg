@@ -24,7 +24,7 @@ const DailyTasks: React.FC<DailyTasksProps> = ({ tasks, onComplete, onDelete, co
 
     return (
         <div className="task-section">
-            <h3 className="task-section__header">Daily Quests</h3>
+            <h3>Daily Quests</h3>
             <ul className="task-section__list">
                 {tasks.filter(task => task.type === 'daily').map((task) => (
                     <li key={task._id} className="task-section__item">
@@ -36,13 +36,7 @@ const DailyTasks: React.FC<DailyTasksProps> = ({ tasks, onComplete, onDelete, co
                                 onClick={() => handleComplete(task._id)}
                                 disabled={task.countdown > 0 || task.completed}
                             >
-                                {task.completed ? 'Completed' : 'Complete Task'}
-                            </button>
-                            <button
-                                className="task-section__button task-section__button--delete"
-                                onClick={() => onDelete(task._id)}
-                            >
-                                Delete
+                                {task.completed ? 'Completed' : 'Complete Quest'}
                             </button>
                             {coinReward.id === task._id && (
                                 <div className="coin-reward">
@@ -50,6 +44,12 @@ const DailyTasks: React.FC<DailyTasksProps> = ({ tasks, onComplete, onDelete, co
                                     <span>+{coinReward.reward}</span>
                                 </div>
                             )}
+                            <button
+                                className="task-section__button task-section__button--delete"
+                                onClick={() => onDelete(task._id)}
+                            >
+                                Delete
+                            </button>
                         </div>
                     </li>
                 ))}

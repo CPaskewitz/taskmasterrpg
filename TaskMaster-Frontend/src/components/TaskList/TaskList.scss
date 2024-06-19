@@ -180,6 +180,7 @@
         justify-content: space-between;
         align-items: center;
         width: 100%;
+        position: relative;
     }
 
     &__button {
@@ -221,6 +222,7 @@
     left: 50%;
     transform: translateX(-50%);
     animation: moveUp 3s forwards, fadeOut 3s forwards;
+    margin-left: 10px;
 
     img {
         width: 32px;
