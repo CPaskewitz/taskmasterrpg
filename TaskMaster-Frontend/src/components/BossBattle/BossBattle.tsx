@@ -44,6 +44,8 @@ const BossBattle: React.FC<BossBattleProps> = ({ refreshStats, character }) => {
     const [boss, setBoss] = useState<Boss | null>(null);
     const [rewards, setRewards] = useState<{ gold: number; exp: number; levelUp: boolean; newLevel?: number } | null>(null);
     const [isFindingNextEnemy, setIsFindingNextEnemy] = useState<boolean>(false);
+    const [isShaking, setIsShaking] = useState<boolean>(false);
+    const [isFlashing, setIsFlashing] = useState<boolean>(false);
     const token = localStorage.getItem('token');
 
     const fetchBoss = useCallback(async () => {
@@ -71,6 +73,10 @@ const BossBattle: React.FC<BossBattleProps> = ({ refreshStats, character }) => {
         if (character && boss) {
             setRewards(null);
             setIsFindingNextEnemy(true);
+            setIsShaking(true);
+            setIsFlashing(true);
+            setTimeout(() => setIsShaking(false), 500); // Stop shaking after 0.5s
+            setTimeout(() => setIsFlashing(false), 200); // Stop flashing after 0.2s
             try {
                 const attackResponse = await axios.put(`/api/boss/${boss._id}/attack`, {
                     damage: character.attackDamage
@@ -120,7 +126,11 @@ const BossBattle: React.FC<BossBattleProps> = ({ refreshStats, character }) => {
             <h2 className="boss-battle__header">{boss.name}</h2>
             <div className="boss-battle__boss-info">
                 <p className="boss-battle__boss-level">Level {boss.level}</p>
-                <img src={`${baseURL}${boss.imageUrl}`} alt={boss.name} className="boss-battle__boss-image" />
+                <img
+                    src={`${baseURL}${boss.imageUrl}`}
+                    alt={boss.name}
+                    className={`boss-battle__boss-image ${isShaking ? 'shake' : ''} ${isFlashing ? 'flash' : ''}`}
+                />
                 <BossHealthBar healthPoints={boss.healthPoints} maxHealthPoints={boss.maxHealthPoints} />
             </div>
             <div className="boss-battle__action">
