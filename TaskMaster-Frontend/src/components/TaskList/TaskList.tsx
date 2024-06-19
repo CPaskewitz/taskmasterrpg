@@ -89,7 +89,7 @@ const TaskList: React.FC<TaskListProps> = ({ onTaskComplete }) => {
             const { data: updatedTask } = response;
             setTasks(tasks.map(task => (task._id === id ? updatedTask : task)));
             setCoinReward({ id, reward: updatedTask.goldReward });
-            setTimeout(() => setCoinReward({ id: null, reward: 0 }), 3000); 
+            setTimeout(() => setCoinReward({ id: null, reward: 0 }), 3000);
             onTaskComplete();
         } catch (error: any) {
             console.error('Error completing task:', error.response?.data || error.message);
@@ -127,24 +127,26 @@ const TaskList: React.FC<TaskListProps> = ({ onTaskComplete }) => {
 
     return (
         <div className="task-list">
-            <h2>Quest List</h2>
-            <button onClick={() => setShowForm(!showForm)}>
+            <h2 className="task-list__header">Quest List</h2>
+            <button className="task-list__toggle-form-button" onClick={() => setShowForm(!showForm)}>
                 {showForm ? 'Hide Form' : 'Show Form'}
             </button>
             {showForm && (
-                <form onSubmit={handleSubmit}>
-                    <div>
-                        <label>Description</label>
+                <form className="task-list__form" onSubmit={handleSubmit}>
+                    <div className="task-list__form-group">
+                        <label className="task-list__form-label">Description</label>
                         <input
+                            className="task-list__form-input"
                             type="text"
                             value={description}
                             onChange={(e) => setDescription(e.target.value)}
                             required
                         />
                     </div>
-                    <div>
-                        <label>Estimated Time</label>
+                    <div className="task-list__form-group">
+                        <label className="task-list__form-label">Estimated Time</label>
                         <select
+                            className="task-list__form-select"
                             value={estimatedTime}
                             onChange={(e) => setEstimatedTime(Number(e.target.value))}
                             required
@@ -156,14 +158,18 @@ const TaskList: React.FC<TaskListProps> = ({ onTaskComplete }) => {
                             ))}
                         </select>
                     </div>
-                    <div>
-                        <label>Quest Type</label>
-                        <select value={taskType} onChange={(e) => setTaskType(e.target.value as 'daily' | 'general')}>
+                    <div className="task-list__form-group">
+                        <label className="task-list__form-label">Quest Type</label>
+                        <select
+                            className="task-list__form-select"
+                            value={taskType}
+                            onChange={(e) => setTaskType(e.target.value as 'daily' | 'general')}
+                        >
                             <option value="general">General</option>
                             <option value="daily">Daily</option>
                         </select>
                     </div>
-                    <button type="submit">Add Quest</button>
+                    <button className="task-list__form-submit" type="submit">Add Quest</button>
                 </form>
             )}
             <DailyTasks tasks={tasks} onComplete={handleCompleteTask} onDelete={handleDeleteTask} coinReward={coinReward} />

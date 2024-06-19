@@ -11,44 +11,66 @@
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
     color: #333;
 
-    h2 {
+    &__header {
         text-align: center;
         font-size: 1.5em;
         margin-bottom: 10px;
         color: #5b3713;
     }
 
-    form {
+    &__toggle-form-button {
+        background: #007bff;
+        color: white;
+        cursor: pointer;
+        padding: 10px;
+        border-radius: 5px;
+        border: 1px solid #ccc;
+
+        &:hover {
+            background: #0056b3;
+        }
+    }
+
+    &__form {
         display: flex;
         flex-direction: column;
         gap: 10px;
         margin-bottom: 20px;
 
-        div {
+        &-group {
             display: flex;
             flex-direction: column;
         }
 
-        label {
+        &-label {
             margin-bottom: 5px;
             color: #5b3713;
         }
 
-        input,
-        select,
-        button {
+        &-input {
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+
+            &:focus {
+                outline: 2px solid #d4a373;
+            }
+        }
+
+        &-select,
+        &-submit {
             padding: 10px;
             border-radius: 5px;
             border: 1px solid #ccc;
         }
 
-        input,
-        select {
+        &-input,
+        &-select {
             background: #f9f4e9;
             border: 1px solid #d4a373;
         }
 
-        button {
+        &-submit {
             background: #007bff;
             color: white;
             cursor: pointer;
@@ -59,64 +81,133 @@
         }
     }
 
-    ul {
+    &__list {
         list-style: none;
         padding: 0;
+    }
 
-        li {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding: 10px;
-            background: #f9f4e9;
-            margin-bottom: 10px;
-            border-radius: 5px;
-            border: 1px solid #d4a373;
-            box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.1);
-            width: 100%;
+    &__item {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 10px;
+        background: #f9f4e9;
+        margin-bottom: 10px;
+        border-radius: 5px;
+        border: 1px solid #d4a373;
+        box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.1);
+        width: 100%;
+    }
 
-            .task {
+    &__countdown {
+        color: gray;
+    }
 
-                &__countdown {
-                    color: gray;
-                }
+    &__wrapper {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;
+    }
 
-                &__wrapper {
-                    display: flex;
-                    justify-content: space-between;
-                    align-items: center;
-                    width: 100%;
-                }
+    &__button {
+        padding: 5px 10px;
+        border-radius: 5px;
+        border: none;
+        cursor: pointer;
+
+        &--complete {
+            background: #28a745;
+            color: white;
+
+            &:disabled {
+                background: #ccc;
+                cursor: not-allowed;
             }
 
-            button {
-                padding: 5px 10px;
-                border-radius: 5px;
-                border: none;
-                cursor: pointer;
+            &:hover:not(:disabled) {
+                background: #218838;
+            }
+        }
 
-                &.complete-button {
-                    background: #28a745;
-                    color: white;
+        &--delete {
+            background: #dc3545;
+            color: white;
 
-                    &:disabled {
-                        background: #ccc;
-                        cursor: not-allowed;
-                    }
+            &:hover {
+                background: #c82333;
+            }
+        }
+    }
+}
 
-                    &:hover:not(:disabled) {
-                        background: #218838;
-                    }
-                }
+.task-section {
+    &__header {
+        text-align: center;
+        font-size: 1.5em;
+        margin-bottom: 10px;
+        color: #5b3713;
+    }
 
-                &.delete-button {
-                    background: #dc3545;
-                    color: white;
+    &__list {
+        list-style: none;
+        padding: 0;
+    }
 
-                    &:hover {
-                        background: #c82333;
-                    }
-                }
+    &__item {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 10px;
+        background: #f9f4e9;
+        margin-bottom: 10px;
+        border-radius: 5px;
+        border: 1px solid #d4a373;
+        box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.1);
+        width: 100%;
+    }
+
+    &__description {
+        color: #333;
+    }
+
+    &__countdown {
+        color: gray;
+    }
+
+    &__wrapper {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;
+    }
+
+    &__button {
+        padding: 5px 10px;
+        border-radius: 5px;
+        border: none;
+        cursor: pointer;
+
+        &--complete {
+            background: #28a745;
+            color: white;
+
+            &:disabled {
+                background: #ccc;
+                cursor: not-allowed;
+            }
+
+            &:hover:not(:disabled) {
+                background: #218838;
+            }
+        }
+
+        &--delete {
+            background: #dc3545;
+            color: white;
+
+            &:hover {
+                background: #c82333;
             }
         }
     }
