@@ -5,6 +5,7 @@ import TaskList from "../../components/TaskList/TaskList";
 import ShopModal from "../../components/ShopModal/ShopModal";
 import BossBattle from "../../components/BossBattle/BossBattle";
 import CharacterLevel from "../../components/CharacterLevel/CharacterLevel";
+import HowToPlayModal from "../../components/HowToPlayModal/HowToPlayModal";
 import axios from '../../../axiosConfig';
 import './Home.scss';
 
@@ -31,8 +32,9 @@ interface Character {
 export function Home() {
     const [refreshStats, setRefreshStats] = useState(false);
     const [character, setCharacter] = useState<Character | null>(null);
-    const [isShopModalOpen, setIsShopModalOpen] = useState<boolean>(false); // State for shop modal visibility
-    const [isStatsModalOpen, setIsStatsModalOpen] = useState<boolean>(false); // State for stats modal visibility
+    const [isShopModalOpen, setIsShopModalOpen] = useState<boolean>(false);
+    const [isStatsModalOpen, setIsStatsModalOpen] = useState<boolean>(false);
+    const [isHowToPlayModalOpen, setIsHowToPlayModalOpen] = useState<boolean>(false);
 
     const triggerStatsRefresh = () => {
         setRefreshStats(!refreshStats);
@@ -72,21 +74,38 @@ export function Home() {
         setIsStatsModalOpen(false);
     };
 
+    const openHowToPlayModal = () => {
+        setIsHowToPlayModalOpen(true);
+    };
+
+    const closeHowToPlayModal = () => {
+        setIsHowToPlayModalOpen(false);
+    };
+
     return (
         <div className="home__container">
             <div className="home__top-bar">
                 <img
                     src="/assets/images/character.png"
                     alt="Character"
-                    className="character__image"
+                    className="home__image--character"
                     onClick={openStatsModal}
                 />
                 {isStatsModalOpen && <StatsModal onClose={closeStatsModal} character={character} />}
-                {character && <CharacterLevel character={character} />}
+                <div className="home__top-bar--middle">
+                    {character && <CharacterLevel character={character} />}
+                    <img
+                        src="/assets/images/question.png"
+                        alt="How to Play"
+                        className="home__image--how-to-play"
+                        onClick={openHowToPlayModal}
+                    />
+                    {isHowToPlayModalOpen && <HowToPlayModal onClose={closeHowToPlayModal} />}
+                </div>
                 <img
                     src="/assets/images/shop.png"
                     alt="Shop"
-                    className="shop__image"
+                    className="home__image--shop"
                     onClick={openShopModal}
                 />
                 {isShopModalOpen && <ShopModal onClose={closeShopModal} onPurchase={triggerStatsRefresh} />}
