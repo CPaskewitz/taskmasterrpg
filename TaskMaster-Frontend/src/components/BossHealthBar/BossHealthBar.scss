@@ -1,0 +1,30 @@
+@use '../../partials/mixins' as *;
+@use '../../partials/variables' as *;
+
+.boss-health-bar {
+    width: 100%;
+    height: 1.563rem;
+    background-color: #e0e0e0;
+    border-radius: 15px;
+    overflow: hidden;
+    margin: 0 auto;
+    position: relative;
+    text-align: center;
+    line-height: 25px;
+
+    &-inner {
+        height: 100%;
+        background-color: #d9534f;
+        transition: width 0.5s ease;
+        position: absolute;
+        top: 0;
+        left: 0;
+    }
+
+    &-text {
+        position: relative;
+        z-index: 1;
+        color: black;
+        font-weight: bold;
+    }
+}
