@@ -81,7 +81,7 @@ userRouter.post('/register', async (req: Request, res: Response) => {
         );
 
         const payload = { userId: userResult.insertedId.toString() };
-        const token = jwt.sign(payload, process.env.JWT_SECRET!, { expiresIn: '1h' });
+        const token = jwt.sign(payload, process.env.JWT_SECRET!, { expiresIn: '24h' });
 
         res.send({ token });
     } catch (err) {
@@ -107,7 +107,7 @@ userRouter.post('/login', async (req: Request, res: Response) => {
         }
 
         const payload = { userId: user._id.toString() };
-        const token = jwt.sign(payload, process.env.JWT_SECRET!, { expiresIn: '1h' });
+        const token = jwt.sign(payload, process.env.JWT_SECRET!, { expiresIn: '24h' });
 
         res.send({ token });
     } catch (err) {
