@@ -6,6 +6,7 @@
         padding: 16px;
         background: url('/assets/images/wood.jpg') no-repeat center center;
         background-size: cover;
+        min-height: 100vh;
 
         @include tablet {
             padding: 24px;
