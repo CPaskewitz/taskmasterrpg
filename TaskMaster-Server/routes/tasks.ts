@@ -87,7 +87,7 @@ taskRouter.put('/tasks/:id', auth, async (req: Request, res: Response) => {
 
         let goldReward = 0;
         if (updates.completed && !task.completed) {
-            goldReward = Math.max(1, Math.floor(task.estimatedTime / 10));
+            goldReward = Math.max(1, Math.floor(task.estimatedTime / 5));
 
             await charactersCollection.updateOne(
                 { userId: userId },
