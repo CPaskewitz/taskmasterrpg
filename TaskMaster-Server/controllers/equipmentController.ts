@@ -58,7 +58,6 @@ const purchaseEquipment = async (req: Request, res: Response) => {
             return res.status(400).send('Not enough gold');
         }
 
-        // Remove existing equipment of the same type
         const existingEquipment = character.equipment.find((item: any) => item.type === equipmentItem.type);
         const attackPower = equipmentItem.damageBoost || 0;
 
